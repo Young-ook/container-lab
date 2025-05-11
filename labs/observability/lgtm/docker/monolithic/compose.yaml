@@ -84,9 +84,9 @@ services:
     command:
       - "-target=all"
       - "-server.http-listen-port=3200"
-      - "-storage.trace.backend=local"                  # tell tempo where to permanently put traces
-      - "-storage.trace.wal.path=/tmp/tempo/wal"        # tell tempo where to store the wal
-      - "-storage.trace.local.path=/tmp/tempo/traces"
+      - "-storage.trace.backend=local"
+      - "-storage.trace.wal.path=/tmp/tempo/wal"       # tell tempo where to store the wal
+      - "-storage.trace.local.path=/tmp/tempo/traces"  # tell tempo where to permanently put traces
       - "-config.file=/etc/tempo/config.yaml"
     configs:
       - source: tempo-config
@@ -137,6 +137,7 @@ configs:
         uid: loki
         access: proxy
         url: "http://loki:3100"
+        orgId: 1
         version: 1
         editable: true
         isDefault: false
@@ -149,31 +150,33 @@ configs:
         type: prometheus
         uid: mimir
         access: proxy
-        orgId: 1
         url: "http://mimir:3100/prometheus"
+        orgId: 1
         version: 1
         editable: true
         isDefault: true
         basicAuth: false
         jsonData:
           httpHeaderName1: "X-Scope-OrgID"
-          alertmanagerUid: "alertmanager"
         secureJsonData:
           httpHeaderValue1: "tenant1"
       - name: Tempo
         type: tempo
         uid: tempo
         access: proxy
-        orgId: 1
         url: "http://tempo:3200"
+        orgId: 1
         version: 1
         editable: true
         isDefault: false
         basicAuth: false
         apiVersion: 1
         jsonData:
+          httpHeaderName1: "X-Scope-OrgID"
           serviceMap:
             datasourceUid: mimir
+        secureJsonData:
+          httpHeaderValue1: "tenant1"
 
   tempo-config:
     content: |
@@ -183,3 +186,6 @@ configs:
             protocols:
               grpc:
                 endpoint: "tempo:4317"
+      query_frontend:
+        multi_tenant_queries_enabled: true
+      multitenancy_enabled: true
