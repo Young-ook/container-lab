@@ -79,7 +79,7 @@ services:
       - grafana-net
 
   tempo:
-    image: grafana/tempo
+    image: grafana/tempo:latest
     restart: on-failure
     command:
       - "-target=all"
