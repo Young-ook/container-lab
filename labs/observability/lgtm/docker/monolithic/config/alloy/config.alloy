@@ -87,6 +87,9 @@ otelcol.exporter.prometheus "default" {
 otelcol.exporter.otlp "tempo" {
     client {
         endpoint = coalesce(sys.env("TEMPO_HOST"), "localhost:4317")
+        headers = {
+            "X-Scope-OrgID" = "tenant1",
+        }
         tls {
             insecure                = true
             insecure_skip_verify    = true
