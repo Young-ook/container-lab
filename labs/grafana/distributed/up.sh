@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VALS_DIR='./values'
+VALS_DIR='./config'
 TENANT_ID=tenant1
 TENANT_PW=tenant1
 
