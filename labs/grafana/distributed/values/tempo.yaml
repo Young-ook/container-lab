@@ -1,0 +1,40 @@
+---
+nginx:
+  enabled: false
+
+gateway:
+  enabled: true
+  basicAuth:
+    enabled: true
+    existingSecret: basic-auth
+
+#  ingress:
+#    enabled: true
+#    hosts:
+#      - host: mimir.local
+#        paths:
+#          - path: /
+#            pathType: Prefix
+
+minio:
+  enabled: true
+
+queryFrontend:
+  replicas: 1
+
+queryScheduler:
+  replicas: 1
+
+querier:
+  replicas: 1
+
+distributor:
+  replicas: 1
+
+compactor:
+  replicas: 1
+
+ingester:
+  replicas: 3
+  zoneAwareReplication:
+    enabled: false

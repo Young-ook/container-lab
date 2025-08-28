@@ -1,0 +1,125 @@
+---
+##
+## https://github.com/grafana/k8s-monitoring-helm
+cluster:
+  name: local
+
+global:
+  scrapeInterval: 15s
+
+destinations:
+  - name: metrics
+    type: prometheus
+    url: http://mimir-gateway.mimir.svc/api/v1/push
+    extraHeaders:
+      X-Scope-OrgID: tenant1
+    auth:
+      type: basic
+      usernameKey: username
+      passwordKey: password
+    secret:
+      create: false
+      name: basic-auth
+      namespace: alloy
+  - name: logs
+    type: loki
+    url: http://loki-gateway.loki.svc/api/prom/push
+    extraHeaders:
+      X-Scope-OrgID: tenant1
+    auth:
+      type: basic
+      usernameKey: username
+      passwordKey: password
+    secret:
+      create: false
+      name: basic-auth
+      namespace: alloy
+
+integrations:
+  alloy:
+    instances:
+      - name: alloy
+        labelSelectors:
+          app.kubernetes.io/name: [alloy-metrics, alloy-singleton, alloy-logs]
+
+clusterMetrics:
+  enabled: true
+  collector: alloy-singleton
+
+  nodeLables:
+    nodePool: true
+    nodeRole: true
+    os: true
+    architecture: true
+    instanceType: true
+
+  kubelet:
+    enabled: true
+
+  kubeletResource:
+    enabled: true
+
+  cadvisor:
+    enabled: true
+
+  apiServer:
+    enabled: true
+
+  kubeControllerManager:
+    enabled: true
+
+  kubeDNS:
+    enabled: true
+
+  kubeProxy:
+    enabled: true
+
+  kubeScheduler:
+    enabled: true
+
+  kube-state-metrics:
+    enabled: true
+
+  node-exporter:
+    enabled: true
+    service:
+      port: 9102
+      targetPort: 9102
+    deploy: true
+    scrapeInterval: 30s
+    labelMatchers:
+      app.kubernetes.io/name: node-exporter
+    metricsTuning:
+      dropMetricsForFilesystems: [ramfs, tmpfs]
+      useDefaultAllowList: true
+
+clusterEvents:
+  enabled: true
+
+podLogs:
+  enabled: true
+
+nodeLogs:
+  enabled: false
+
+prometheusOperatorObjects:
+  enabled: true
+  crds:
+    deploy: true
+  podMonitors:
+    lableSelector:
+      app: myapp
+
+alloy-metrics:
+  enabled: true
+  controller:
+    replicas: 1
+
+alloy-singleton:
+  enabled: true
+
+alloy-logs:
+  enabled: true
+
+selfReporting:
+  enabled: false

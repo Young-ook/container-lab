@@ -1,0 +1,48 @@
+---
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: mimir
+        type: prometheus
+        access: proxy
+        orgId: 1
+        url: http://mimir-gateway.mimir.svc/prometheus
+        isDefault: true
+        version: 1
+        editable: true
+        basicAuth: true
+        basicAuthUser: "tenant1"
+        jsonData:
+          httpHeaderName1: "X-Scope-OrgID"
+        secureJsonData:
+          httpHeaderValue1: "tenant1"
+          basicAuthPassword: "tenant1"
+      - name: loki
+        type: loki
+        access: proxy
+        orgId: 1
+        url: http://loki-gateway.loki.svc
+        version: 1
+        editable: true
+        basicAuth: true
+        basicAuthUser: "tenant1"
+        jsonData:
+          httpHeaderName1: "X-Scope-OrgID"
+        secureJsonData:
+          httpHeaderValue1: "tenant1"
+          basicAuthPassword: "tenant1"
+      - name: tempo
+        type: tempo
+        access: proxy
+        orgId: 1
+        url: http://tempo-gateway.tempo.svc
+        version: 1
+        editable: true
+        basicAuth: true
+        basicAuthUser: "tenant1"
+        jsonData:
+          httpHeaderName1: "X-Scope-OrgID"
+        secureJsonData:
+          httpHeaderValue1: "tenant1"
+          basicAuthPassword: "tenant1"
