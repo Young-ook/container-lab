@@ -97,6 +97,29 @@ services:
     networks:
       - grafana-net
 
+  gateway:
+    image: nginx:latest
+    restart: on-failure
+    entrypoint:
+      - sh
+      - -euc
+      - /docker-entrypoint.sh nginx -g "daemon off;"
+    ports:
+      - 3100
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - loki
+      - mimir
+      - tempo
+    healthcheck:
+      test: ["CMD", "service nginx status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - grafana-net
+
   grafana:
     image: grafana/grafana:latest
     restart: on-failure
@@ -110,74 +133,21 @@ services:
       - GF_PATH_PROVISIONING=/etc/grafana/provisioning
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-    configs:
-      - source: datasource-config
-        target: /etc/grafana/provisioning/datasources/datasources.yaml
     ports:
       - 3000:3000
+    volumes:
+      - ./config/grafana/datasources:/etc/grafana/provisioning/datasources:ro
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
     depends_on:
-      - loki
-      - mimir
-      - tempo
+      - gateway
     networks:
       - grafana-net
 
 configs:
-  datasource-config:
-    content: |
-      apiVersion: 1
-      datasources:
-      - name: Loki
-        type: loki
-        uid: loki
-        access: proxy
-        url: "http://loki:3100"
-        orgId: 1
-        version: 1
-        editable: true
-        isDefault: false
-        basicAuth: false
-        jsonData:
-          httpHeaderName1: "X-Scope-OrgID"
-        secureJsonData:
-          httpHeaderValue1: "tenant1"
-      - name: Mimir
-        type: prometheus
-        uid: mimir
-        access: proxy
-        url: "http://mimir:3100/prometheus"
-        orgId: 1
-        version: 1
-        editable: true
-        isDefault: true
-        basicAuth: false
-        jsonData:
-          httpHeaderName1: "X-Scope-OrgID"
-        secureJsonData:
-          httpHeaderValue1: "tenant1"
-      - name: Tempo
-        type: tempo
-        uid: tempo
-        access: proxy
-        url: "http://tempo:3200"
-        orgId: 1
-        version: 1
-        editable: true
-        isDefault: false
-        basicAuth: false
-        apiVersion: 1
-        jsonData:
-          httpHeaderName1: "X-Scope-OrgID"
-          serviceMap:
-            datasourceUid: mimir
-        secureJsonData:
-          httpHeaderValue1: "tenant1"
-
   tempo-config:
     content: |
       distributor:
