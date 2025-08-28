@@ -1,5 +1,5 @@
 
-# Deployment mode: Distrobuted
+# Deployment mode: Distributed
 You will see `htpasswd: command not found error` error if you don't have in your system. To fix, you need to intall *htpasswd*. It is required to generate a htpasswd file for basic auth of Apache or Nginx server.
 
 Debian/Ubuntu:
