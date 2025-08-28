@@ -43,11 +43,15 @@ services:
     restart: on-failure
     command:
       - "-target=all"
-      - "-config.file=/etc/loki/local-config.yaml"
+      - "-config.file=/etc/loki/loki-config.yaml"
     ports:
       - 3100
       - 7946
       - 9095
+    volumes:
+      - ./config/loki:/etc/loki:ro
+    depends_on:
+      - minio
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1"]
       interval: 10s
@@ -56,20 +60,22 @@ services:
     networks:
       - grafana-net
 
+   # Mimir configuration paramters (yaml/cli)
+   # https://grafana.com/docs/mimir/latest/configure/configuration-parameters
   mimir:
     image: grafana/mimir:latest
     restart: on-failure
     command:
       - "-target=all"
-      - "-server.http-listen-port=3100"
-# This is configuration to turn off "send data to ingesters: at least 2 live replicas required, could only find 1" warning.
-# Do not apply in production.
-      - "-ingester.ring.store=inmemory"
-      - "-ingester.ring.replication-factor=1"
+      - "-config.file=/etc/mimir/mimir-config.yaml"
     ports:
       - 3100
       - 7946
       - 9095
+    volumes:
+      - ./config/mimir:/etc/mimir:ro
+    depends_on:
+      - minio
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1"]
       interval: 10s
@@ -94,6 +100,33 @@ services:
     ports:
       - 3200
       - 4317
+    networks:
+      - grafana-net
+
+  minio:
+    image: minio/minio:latest
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        mkdir -p /data/loki-data && \
+        mkdir -p /data/loki-ruler && \
+        mkdir -p /data/mimir-data && \
+        minio server /data
+    environment:
+      - MINIO_ROOT_USER=lgtm
+      - MINIO_ROOT_PASSWORD=supersecret
+      - MINIO_PROMETHEUS_AUTH_TYPE=public
+      - MINIO_UPDATE=off
+    ports:
+      - 9000
+    volumes:
+      - ./.data/minio:/data
+    healthcheck:
+      test: ["CMD", "curl -f http://localhost:9000/minio/health/live"]
+      interval: 15s
+      timeout: 20s
+      retries: 5
     networks:
       - grafana-net
 

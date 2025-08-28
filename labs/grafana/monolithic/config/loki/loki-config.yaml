@@ -5,7 +5,6 @@ server:
 
 # use memberlist, a gossip-based protocol, to enable the 3 replicas to communicate
 memberlist:
-  join_members: ["loki-read", "loki-write", "loki-backend"]
   dead_node_reclaim_time: 30s
   gossip_to_dead_nodes_time: 15s
   left_ingesters_timeout: 30s
@@ -47,3 +46,4 @@ ruler:
 
 compactor:
   working_directory: /tmp/compactor
+
