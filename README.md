@@ -94,7 +94,7 @@ asdf list                 # or helm version
 ```
 
 # Labs
-- [Observability Lab](labs/observability-lab.md)
+- [Grafana Lab](labs/grafana/README.md)
 
 # Clean up
 
