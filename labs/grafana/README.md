@@ -13,3 +13,14 @@ helm plugin install https://github.com/databus23/helm-diff
 ```
 
 Loki requires at least 3 Kubernetes nodes to deploy an ingester per node. This is necessary for pod-affinity.
+
+# Deployment mode: Monolithic
+For quickstart, run docker compose in the mmonolithic directory:
+```
+docker compose up -d
+```
+
+Clean up:
+```
+docker compose down
+```
