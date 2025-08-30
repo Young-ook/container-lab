@@ -94,9 +94,7 @@ asdf list                 # or helm version
 ```
 
 # Labs
-- [Grafana Lab](labs/grafana/README.md)
-
-# Clean up
+- [Observability Lab](labs/observability-lab.md)
 
 # Troubleshooting
 - [Describe listening ports](https://phoenixnap.com/kb/linux-check-open-ports)

@@ -24,3 +24,13 @@ Clean up:
 ```
 docker compose down
 ```
+
+# Loki
+![grafana-loki-log-explore](../../images/grafana/loki-log-explore.png)
+
+# Mimir
+![grafana-mimir-metric-explore](../../images/grafana/mimir-metric-explore.png)
+
+# Tempo
+![grafana-tempo-trace-explore](../../images/grafana/tempo-trace-explore.png)
+![grafana-tempo-service-map](../../images/grafana/tempo-service-map.png)
