@@ -22,7 +22,10 @@ Kubernetes, is an open-source platform designed to automate the deployment, scal
 > - WSL2 Requirement: WSL2, on the other hand, runs a virtual machine with a real Linux kernel, allowing for the necessary kernel features to be present. This is why you need WSL2 to run container technologies.
 > You can check your WSL version by running `wsl -l -v` in PowerShell.
 
-### Install Docker Desktop
+### kind
+[kind (Kubernetes IN Docker)](https://github.com/kubernetes-sigs/kind) is a tool for running local Kubernetes clusters using Docker container 'nodes'. kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI.
+
+#### Enable Kubernetes in Docker Desktop
 Download Docker Desktop from the [official website](https://www.docker.com/products/docker-desktop) and install. During installation, ensure the option to **enable WSL integration** is selected.
 
 Once installed, you can verify installation using `wsl -l -v` command on Windows PowerShell:
@@ -34,17 +37,38 @@ Once installed, you can verify installation using `wsl -l -v` command on Windows
 
 Open Docker Desktop and go to *Settings > Resources > WSL Integration* to verify if the WSL integration is enabled.
 
-### Enable Kubernetes in Docker Desktop
 In Docker Desktop, navigate to *Settings > Kubernetes* and check the box for *Enable Kubernetes* and click **Apply & Restart**. Then, wait for Docker Desktop to download the necessary Kubernetes components. The Kubernetes icon will turn green once it's ready.
 
 ![wsl-docker-kube-enabled](images/wsl-docker-kube-enabled.png)
+
+The default cluster is single-node cluster based on 'Kubeadmin', which is good for almost local test cases. However, some environments need multiple nodes for high-availability deployment. Select *kind* in the *Cluster settings* and click **Apply & Restart** to change the cluster provisioning method. It requires restarting Kubernetes cluster.
 
 To verify Kubernetes installation, open your linux terminal in WSL and run the following commands to verify Kubernetes is running:
 ```bash
 kubectl version --client
 kubectl get nodes
 ```
-You should see at least one node listed, confirming your cluster is up and running.
+You will see nodes, which means your cluster is up and running. If you want more information about enabling Kubernetes with Docker Desktop, please refer to the [Deploy on Kubernetes with Docker Desktop](https://docs.docker.com/desktop/features/kubernetes/).
+
+#### Enable Kubernetes with kind and podman
+You can use [podman](https://podman.io) a daemonless container engine and kind directly on native Debian or virtual environment (not WSL2) if you don't want complexity of integration between WSL2 and Docker Destkop.
+
+To install podman, run apt package manage command:
+```
+sudo apt update
+sudo apt install podman
+```
+
+If you don't have kind cli in your environment, you need to install. Follow the instructions from the [official installation guide](https://kind.sigs.k8s.io/docs/user/quick-start/#installation). Or, if you are familiar to asdf a multi-runtime tool manage, you can simply install it using asdf commands. The details about asdf is below.
+```
+asdf add plugin kind
+asdf install kind latest
+asdf set -u kind <version>
+```
+After kind installation, you can create a new cluster using kind command.
+```
+kind create cluster --config <config.yaml>
+```
 
 ## asdf
 *asdf*, a multi-runtime version manager is a centralized tool that allows users to easily install and switch between different versions of development tools. The old way of working required multiple CLI (Command Line Interface) version managers, each with their distinct API, configuration files and implementations (e.g., $PATH manipulation, shims, environment variable, etc ...). However, *asdf* is providing 1/ a **single interface** and configuration file to simplify development
