@@ -11,7 +11,7 @@ MIMIR_CHART_VER=5.7.0
 TEMPO_CHART_VER=1.45.0
 
 function helmrepo() {
-  echo "Updating Helm repos"
+  echo "Updating Helm repos:"
   ### helm repo
   helm repo add grafana https://grafana.github.io/helm-charts
   helm repo list
@@ -19,8 +19,7 @@ function helmrepo() {
 }
 
 function setup() {
-  echo "Installing applications"
-
+  echo "Installing applications:"
   ### creds
   for ns in alloy loki mimir monitoring tempo; do
     kubectl create ns $ns
@@ -51,8 +50,19 @@ function setup() {
 
   helm upgrade --install -n alloy k8s-monitoring grafana/k8s-monitoring \
       -f $VALS_DIR/alloy.yaml --version $K8SMON_CHART_VER
+
+  ### list deployed helm releases
+  echo "Installed applications:"
+  helm ls -A
+}
+
+function adminpw() {
+  echo "Grafana admin initial password:"
+  kubectl get secret --namespace monitoring grafana \
+      -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 }
 
 # main
 helmrepo
 setup
+adminpw
