@@ -11,7 +11,7 @@ MIMIR_CHART_VER=5.7.0
 TEMPO_CHART_VER=1.45.0
 
 function helmrepo() {
-  echo "Updating Helm repos"
+  echo "Updating Helm repos:"
   ### helm repo
   helm repo add grafana https://grafana.github.io/helm-charts
   helm repo list
@@ -19,7 +19,22 @@ function helmrepo() {
 }
 
 function setup() {
-  echo "Installing applications"
+  echo "Installing applications:"
+  ### creds
+  for ns in alloy loki mimir monitoring tempo; do
+    kubectl create ns $ns
+  done
+
+  htpasswd -cb .htpasswd $TENANT_ID $TENANT_PW
+  kubectl -n loki create secret generic basic-auth --from-file=.htpasswd
+  kubectl -n mimir create secret generic basic-auth --from-file=.htpasswd
+#  kubectl -n tempo create secret generic basic-auth --from-file=.htpasswd
+  rm .htpasswd
+
+  kubectl -n alloy create secret generic basic-auth \
+      --from-literal=username=$TENANT_ID \
+      --from-literal=password=$TENANT_PW
+
   ### apps
   helm upgrade --install -n loki loki grafana/loki \
       -f $VALS_DIR/loki.yaml --version $LOKI_CHART_VER \
@@ -29,25 +44,25 @@ function setup() {
       --create-namespace
 #  helm upgrade --install -n tempo tempo grafana/tempo-distributed -f $VALS_DIR/tempo.yaml --version ${TEMPO_CHART_VER} --create-namespace
 
-  htpasswd -cb .htpasswd $TENANT_ID $TENANT_PW
-  kubectl -n loki create secret generic basic-auth --from-file=.htpasswd
-  kubectl -n mimir create secret generic basic-auth --from-file=.htpasswd
-#  kubectl -n tempo create secret generic basic-auth --from-file=.htpasswd
-  rm .htpasswd
-
-  kubectl create ns alloy
-  kubectl -n alloy create secret generic basic-auth \
-      --from-literal=username=$TENANT_ID \
-      --from-literal=password=$TENANT_PW
+  helm upgrade --install -n monitoring grafana grafana/grafana \
+      -f $VALS_DIR/grafana.yaml --version $GRAFANA_CHART_VER \
+      --create-namespace
 
   helm upgrade --install -n alloy k8s-monitoring grafana/k8s-monitoring \
       -f $VALS_DIR/alloy.yaml --version $K8SMON_CHART_VER
 
-  helm upgrade --install -n monitoring grafana grafana/grafana \
-      -f $VALS_DIR/grafana.yaml --version $GRAFANA_CHART_VER \
-      --create-namespace
+  ### list deployed helm releases
+  echo "Installed applications:"
+  helm ls -A
+}
+
+function adminpw() {
+  echo "Grafana admin initial password:"
+  kubectl get secret --namespace monitoring grafana \
+      -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 }
 
 # main
 helmrepo
 setup
+adminpw
