@@ -51,7 +51,7 @@ kubectl get nodes
 You will see nodes, which means your cluster is up and running. If you want more information about enabling Kubernetes with Docker Desktop, please refer to the [Deploy on Kubernetes with Docker Desktop](https://docs.docker.com/desktop/features/kubernetes/).
 
 #### Enable Kubernetes with kind and podman
-You can use [podman](https://podman.io) a daemonless container engine and kind directly on native Debian or virtual environment (not WSL2) if you don't want complexity of integration between WSL2 and Docker Destkop.
+You can use kind with [podman](https://podman.io) a daemonless container engine on (native or virtual) Debian if you can't use WSL2 or you don't want complexity of integration between WSL2 and Docker Destkop.
 
 To install podman, run apt package manage command:
 ```
