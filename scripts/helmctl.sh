@@ -4,9 +4,9 @@ declare -a HELM_ARGS
 
 # Usage function
 usage() {
-  echo "Usage: $0 [install|diff|update|uninstall] -c|--config <config_file>"
-  echo "  -c|--config <config_file> Path to the YAML configuration file"
-  exit 1
+    echo "Usage: $0 [install|diff|update|uninstall] -c|--config <config_file>"
+    echo "  -c|--config <config_file> Path to the YAML configuration file"
+    exit 1
 }
 
 load_config () {
