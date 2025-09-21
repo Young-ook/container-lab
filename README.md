@@ -127,3 +127,4 @@ asdf list                 # or helm version
 
 # Additional Resources
 - [asdf - The multiple runtime version manager](https://asdf-vm.com/)
+- [Terraform: Amazon EKS Blueprint](https://github.com/Young-ook/terraform-aws-eks/tree/main/examples/blueprint)
