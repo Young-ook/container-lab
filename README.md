@@ -59,7 +59,7 @@ sudo apt update
 sudo apt install podman
 ```
 
-If you don't have kind cli in your environment, you need to install. Follow the instructions from the [official installation guide](https://kind.sigs.k8s.io/docs/user/quick-start/#installation). Or, if you are familiar to asdf a multi-runtime tool manage, you can simply install it using asdf commands. The details about asdf is below.
+If you don't have kind cli in your environment, you need to install. Follow the instructions from the [official installation guide](https://kind.sigs.k8s.io/docs/user/quick-start/#installation). Or, if you are familiar to [asdf](#asdf) a multi-runtime tool manage, you can simply install it using asdf commands. The details about asdf is below.
 ```
 asdf add plugin kind
 asdf install kind latest
