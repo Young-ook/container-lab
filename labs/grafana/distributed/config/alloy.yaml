@@ -12,7 +12,7 @@ destinations:
     type: prometheus
     url: http://mimir-gateway.mimir.svc/api/v1/push
     extraHeaders:
-      X-Scope-OrgID: tenant1
+      X-Scope-OrgID: TENANT_ID
     auth:
       type: basic
       usernameKey: username
@@ -25,7 +25,7 @@ destinations:
     type: loki
     url: http://loki-gateway.loki.svc/loki/api/v1/push
     extraHeaders:
-      X-Scope-OrgID: tenant1
+      X-Scope-OrgID: TENANT_ID
     auth:
       type: basic
       usernameKey: username
