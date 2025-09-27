@@ -2,10 +2,8 @@
 
 declare -a HELM_ARGS
 
-# Usage function
 usage() {
-    echo "Usage: $0 [install|diff|update|uninstall] -c|--config <config_file>"
-    echo "  -c|--config <config_file> Path to the YAML configuration file"
+    echo "Usage: $0 [install|diff|update|uninstall] -c|--config <path to YAML config file>"
     exit 1
 }
 
@@ -50,28 +48,33 @@ load_config () {
     done < <(yq e '.values_files[]?' "$config_file")
 }
 
-# 'install' subcommand
 handle_install() {
     echo "Installing package: ${HELM_ARGS[0]}"
     helm upgrade --install "${HELM_ARGS[@]}" \
         --create-namespace
 }
 
-# 'diff' subcommand
 handle_diff() {
     echo "Preview changes on package: ${HELM_ARGS[0]}"
     helm diff upgrade "${HELM_ARGS[@]}" \
         -C 4 --three-way-merge
 }
 
-# 'uninstall' subcommand
 handle_uninstall() {
     echo "Removing package: ${HELM_ARGS[0]}"
     helm uninstall "${HELM_ARGS[0]}" -n "${HELM_ARGS[5]}"
 #        --cascade foreground
 }
 
-# Main script logic
+### Main script logic
+if ! command -v yq &> /dev/null; then
+    echo "Error: yq is not installed. Please install it to run this script." >&2
+    exit 1
+fi
+
+echo "yq found. Continuing with the script..."
+yq --version
+
 if [[ $# -eq 0 ]]; then
     usage
 fi
@@ -99,7 +102,7 @@ case "$COMMAND" in
         usage
         ;;
     *)
-        echo "Error: Unknown command '$COMMAND'"
+        echo "Error: Unknown command '$COMMAND'" >&2
         usage
         ;;
 esac

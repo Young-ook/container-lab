@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 VALS_DIR='./config'
 TENANT_ID=tenant1
@@ -36,9 +36,8 @@ function setup() {
       --from-literal=password=$TENANT_PW
 
   ### apps
-  helm upgrade --install -n loki loki grafana/loki \
-      -f $VALS_DIR/loki.yaml --version $LOKI_CHART_VER \
-      --create-namespace
+  bash ../../../scripts/helmctl.sh "install" "-c" "./release/loki.yaml"
+
   helm upgrade --install -n mimir mimir grafana/mimir-distributed \
       -f $VALS_DIR/mimir.yaml --version $MIMIR_CHART_VER \
       --create-namespace
