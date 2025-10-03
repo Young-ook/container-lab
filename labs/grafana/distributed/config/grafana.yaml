@@ -12,12 +12,12 @@ datasources:
         version: 1
         editable: true
         basicAuth: true
-        basicAuthUser: "tenant1"
+        basicAuthUser: TENANT_ID
         jsonData:
-          httpHeaderName1: "X-Scope-OrgID"
+          httpHeaderName1: X-Scope-OrgID
         secureJsonData:
-          httpHeaderValue1: "tenant1"
-          basicAuthPassword: "tenant1"
+          httpHeaderValue1: TENANT_ID
+          basicAuthPassword: TENANT_PW
       - name: loki
         type: loki
         access: proxy
@@ -26,12 +26,12 @@ datasources:
         version: 1
         editable: true
         basicAuth: true
-        basicAuthUser: "tenant1"
+        basicAuthUser: TENANT_ID
         jsonData:
-          httpHeaderName1: "X-Scope-OrgID"
+          httpHeaderName1: X-Scope-OrgID
         secureJsonData:
-          httpHeaderValue1: "tenant1"
-          basicAuthPassword: "tenant1"
+          httpHeaderValue1: TENANT_ID
+          basicAuthPassword: TENANT_PW
       - name: tempo
         type: tempo
         access: proxy
@@ -40,9 +40,10 @@ datasources:
         version: 1
         editable: true
         basicAuth: true
-        basicAuthUser: "tenant1"
+        basicAuthUser: TENANT_ID
         jsonData:
-          httpHeaderName1: "X-Scope-OrgID"
+          httpHeaderName1: X-Scope-OrgID
         secureJsonData:
-          httpHeaderValue1: "tenant1"
-          basicAuthPassword: "tenant1"
+          httpHeaderValue1: TENANT_ID
+          basicAuthPassword: TENANT_PW
+
