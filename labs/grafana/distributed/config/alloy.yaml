@@ -23,7 +23,7 @@ destinations:
       namespace: alloy
   - name: logs
     type: loki
-    url: http://loki-gateway.loki.svc/api/prom/push
+    url: http://loki-gateway.loki.svc/loki/api/v1/push
     extraHeaders:
       X-Scope-OrgID: tenant1
     auth:
