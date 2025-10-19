@@ -1,6 +1,16 @@
 
 # Deployment mode: Distributed
-You will see `htpasswd: command not found error` error if you don't have in your system. To fix, you need to intall *htpasswd*. It is required to generate a htpasswd file for basic auth of Apache or Nginx server.
+For quickstart, run bootstrap script in the *distributed* directory:
+```
+bash up.sh
+```
+
+Clean up:
+```
+bash clean.sh
+```
+
+You may see `htpasswd: command not found error` error if you don't have it in your system. To fix, you need to intall *htpasswd*. It is required to generate a htpasswd file for basic auth of Apache or Nginx server.
 
 Debian/Ubuntu:
 ```
@@ -15,7 +25,7 @@ helm plugin install https://github.com/databus23/helm-diff
 Loki requires at least 3 Kubernetes nodes to deploy an ingester per node. This is necessary for pod-affinity.
 
 # Deployment mode: Monolithic
-For quickstart, run docker compose in the mmonolithic directory:
+For quickstart, run docker compose in the *monolithic* directory:
 ```
 docker compose up -d
 ```
@@ -28,12 +38,6 @@ docker compose down
 # Grafana
 ![grafana-drilldown](../../images/grafana/drilldown.png)
 
-# Loki
 ![grafana-loki-log](../../images/grafana/loki-log.png)
-
-# Mimir
 ![grafana-mimir-metric](../../images/grafana/mimir-metric.png)
-
-# Tempo
-![grafana-tempo-trace](../../images/grafana/tempo-trace.png)
 ![grafana-tempo-service-map](../../images/grafana/tempo-service-map.png)
