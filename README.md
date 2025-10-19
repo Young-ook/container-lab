@@ -118,7 +118,7 @@ asdf list                 # or helm version
 ```
 
 # Labs
-- [Observability Lab](labs/observability-lab.md)
+- [Platform Engineering Lab](labs/pe-lab.md)
 
 # Troubleshooting
 - [Describe listening ports](https://phoenixnap.com/kb/linux-check-open-ports)
