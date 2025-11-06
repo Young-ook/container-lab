@@ -48,19 +48,19 @@ load_config () {
     done < <(yq e '.values_files[]?' "$config_file")
 }
 
-handle_install() {
+install() {
     echo "Installing package: ${HELM_ARGS[0]}"
     helm upgrade --install "${HELM_ARGS[@]}" \
         --create-namespace
 }
 
-handle_diff() {
+diff() {
     echo "Preview changes on package: ${HELM_ARGS[0]}"
     helm diff upgrade "${HELM_ARGS[@]}" \
         -C 4 --three-way-merge
 }
 
-handle_uninstall() {
+uninstall() {
     echo "Removing package: ${HELM_ARGS[0]}"
     helm uninstall "${HELM_ARGS[0]}" -n "${HELM_ARGS[5]}"
 #        --cascade foreground
@@ -83,20 +83,23 @@ COMMAND="$1"
 case "$COMMAND" in
     diff)
         load_config "$@"
-        handle_diff
+        diff
         ;;
     install)
         load_config "$@"
-        handle_install
+        install
         ;;
     uninstall)
         load_config "$@"
-        handle_uninstall
+        uninstall
         ;;
     update)
         load_config "$@"
-        handle_diff
-        handle_install
+        diff
+        read -p "Do you want to apply the changes? [y/n]: " choice
+        case $choice in
+            y) install ;;
+        esac
         ;;
     help)
         usage
