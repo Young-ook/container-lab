@@ -10,18 +10,17 @@ usage() {
 prep_req () {
     local tool_conf=".helmctl.conf"
 
-    # Skip if tool config file already exists
-    if [ ! -f "$tool_conf" ]; then
-        # Check if yq is installed
-        if command -v yq &> /dev/null; then
+    # Check if yq is installed
+    if command -v yq &> /dev/null; then
+        if [ ! -f "$tool_conf" ]; then
+            touch "$tool_conf"
+
             echo "yq found. Continuing with the script..."
-            yq_version=$(yq --version)
-            echo "$yq_version"
-            echo "$yq_version" >> "$tool_conf"
-        else
-            echo "Error: yq is not installed. Please install it to proceed." >&2
-            exit 1
+            yq --version
         fi
+    else
+        echo "Error: yq is not installed. Please install it to proceed." >&2
+        exit 1
     fi
 }
 
