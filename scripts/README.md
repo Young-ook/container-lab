@@ -15,7 +15,7 @@ release: loki
 chart: grafana/loki
 version: 6.31.0
 namespace: loki
-values_files:
+values:
 - './config/loki.yaml'
 
 ```

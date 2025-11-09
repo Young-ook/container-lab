@@ -62,7 +62,7 @@ load_config () {
         if [ -n "$val_file" ]; then
             HELM_ARGS+=(--values "$val_file")
         fi
-    done < <(yq e '.values_files[]?' "$helm_conf")
+    done < <(yq e '.values[]?' "$helm_conf")
 }
 
 install() {
