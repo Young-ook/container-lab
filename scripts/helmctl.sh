@@ -7,9 +7,26 @@ usage() {
     exit 1
 }
 
+prep_req () {
+    local tool_conf=".helmctl.conf"
+
+    # Check if yq is installed
+    if command -v yq &> /dev/null; then
+        if [ ! -f "$tool_conf" ]; then
+            touch "$tool_conf"
+
+            echo "yq found. Continuing with the script..."
+            yq --version
+        fi
+    else
+        echo "Error: yq is not installed. Please install it to proceed." >&2
+        exit 1
+    fi
+}
+
 load_config () {
     local script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-    local config_file=""
+    local helm_conf=""
 
     if [[ $# -eq 0 ]]; then
         echo "Error: Configuration file is required."
@@ -20,7 +37,7 @@ load_config () {
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -c|--config)
-		config_file="$2"
+		helm_conf="$2"
                 shift
                 ;;
             *)
@@ -29,23 +46,23 @@ load_config () {
         esac
     done
 
-    if [[ "$config_file" = "" || ! -f "$config_file" ]]; then
+    if [[ "$helm_conf" = "" || ! -f "$helm_conf" ]]; then
         echo "Error: Configuration file is required."
         usage
         exit 1
     fi
 
     # Load parameters from YAML file
-    HELM_ARGS+=($(yq e '.release' "$config_file"))
-    HELM_ARGS+=($(yq e '.chart' "$config_file"))
-    HELM_ARGS+=(--version $(yq e '.version' "$config_file"))
-    HELM_ARGS+=(--namespace $(yq e '.namespace' "$config_file"))
+    HELM_ARGS+=($(yq e '.release' "$helm_conf"))
+    HELM_ARGS+=($(yq e '.chart' "$helm_conf"))
+    HELM_ARGS+=(--version $(yq e '.version' "$helm_conf"))
+    HELM_ARGS+=(--namespace $(yq e '.namespace' "$helm_conf"))
 
     while IFS= read -r val_file; do
         if [ -n "$val_file" ]; then
             HELM_ARGS+=(--values "$val_file")
         fi
-    done < <(yq e '.values_files[]?' "$config_file")
+    done < <(yq e '.values[]?' "$helm_conf")
 }
 
 install() {
@@ -67,13 +84,7 @@ uninstall() {
 }
 
 ### Main script logic
-if ! command -v yq &> /dev/null; then
-    echo "Error: yq is not installed. Please install it to run this script." >&2
-    exit 1
-fi
-
-echo "yq found. Continuing with the script..."
-yq --version
+prep_req
 
 if [[ $# -eq 0 ]]; then
     usage
