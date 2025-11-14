@@ -1,15 +1,8 @@
-#!/bin/bash -e
+#!/bin/bash
 
 VALS_DIR='./config'
 TENANT_ID=tenant1
 TENANT_PW=tenant1
-
-GRAFANA_CHART_VER=9.2.10
-K8SMON_CHART_VER=3.1.2
-LOKI_CHART_VER=6.31.0
-MIMIR_CHART_VER=5.7.0
-TEMPO_CHART_VER=1.45.0
-
 
 function progress() {
   echo "+----------------------------------------------+"
@@ -35,7 +28,7 @@ function setup() {
   htpasswd -cb .htpasswd $TENANT_ID $TENANT_PW
   kubectl -n loki create secret generic basic-auth --from-file=.htpasswd
   kubectl -n mimir create secret generic basic-auth --from-file=.htpasswd
-#  kubectl -n tempo create secret generic basic-auth --from-file=.htpasswd
+  #kubectl -n tempo create secret generic basic-auth --from-file=.htpasswd
   rm .htpasswd
 
   kubectl -n alloy create secret generic basic-auth \
@@ -47,22 +40,19 @@ function setup() {
   bash ../../../scripts/helmctl.sh "install" "-c" "./release/loki.yaml"
 
   progress "Installing Mimir"
-  helm upgrade --install -n mimir mimir grafana/mimir-distributed \
-      -f $VALS_DIR/mimir.yaml --version $MIMIR_CHART_VER \
-      --create-namespace
-#  helm upgrade --install -n tempo tempo grafana/tempo-distributed -f $VALS_DIR/tempo.yaml --version ${TEMPO_CHART_VER} --create-namespace
+  bash ../../../scripts/helmctl.sh "install" "-c" "./release/mimir.yaml"
+
+  #progress "Installing Tempo"
+  #bash ../../../scripts/helmctl.sh "install" "-c" "./release/tempo.yaml"
 
   progress "Installing Alloy"
-  sed -i "s/TENANT_ID/$TENANT_ID/g" $VALS_DIR/alloy.yaml
-  helm upgrade --install -n alloy k8s-monitoring grafana/k8s-monitoring \
-      -f $VALS_DIR/alloy.yaml --version $K8SMON_CHART_VER
+  sed -i "s/TENANT_ID/$TENANT_ID/g" $VALS_DIR/k8s-monitoring.yaml
+  bash ../../../scripts/helmctl.sh "install" "-c" "./release/k8s-monitoring.yaml"
 
   progress "Installing Grafana"
   sed -i "s/TENANT_ID/$TENANT_ID/g" $VALS_DIR/grafana.yaml
   sed -i "s/TENANT_PW/$TENANT_PW/g" $VALS_DIR/grafana.yaml
-  helm upgrade --install -n monitoring grafana grafana/grafana \
-      -f $VALS_DIR/grafana.yaml --version $GRAFANA_CHART_VER \
-      --create-namespace
+  bash ../../../scripts/helmctl.sh "install" "-c" "./release/grafana.yaml"
 
   ### list deployed helm releases
   progress "Installed applications"

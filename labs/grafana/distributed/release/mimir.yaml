@@ -1,0 +1,8 @@
+---
+release: mimir
+chart: grafana/mimir-distributed
+version: 5.7.0
+namespace: mimir
+values:
+- './config/mimir.yaml'
+

@@ -1,0 +1,8 @@
+---
+release: tempo
+chart: grafana/tempo-distributed
+version: 1.45.0
+namespace: tempo
+values:
+- './config/tempo.yaml'
+
