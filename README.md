@@ -65,7 +65,12 @@ asdf add plugin kind
 asdf install kind latest
 asdf set -u kind <version>
 ```
-After kind installation, you can create a new cluster using kind command.
+After kind installation, you can create a new kind cluster:
+```
+kind create cluster
+```
+
+Or customize your cluster with config file:
 ```
 kind create cluster --config <config.yaml>
 ```
