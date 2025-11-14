@@ -37,22 +37,22 @@ function setup() {
 
   ### apps
   progress "Installing Loki"
-  bash ../../../scripts/helmctl.sh "install" "-c" "./release/loki.yaml"
+  bash ../../../scripts/helmctl "install" "-c" "./release/loki.yaml"
 
   progress "Installing Mimir"
-  bash ../../../scripts/helmctl.sh "install" "-c" "./release/mimir.yaml"
+  bash ../../../scripts/helmctl "install" "-c" "./release/mimir.yaml"
 
   #progress "Installing Tempo"
-  #bash ../../../scripts/helmctl.sh "install" "-c" "./release/tempo.yaml"
+  #bash ../../../scripts/helmctl "install" "-c" "./release/tempo.yaml"
 
   progress "Installing Alloy"
   sed -i "s/TENANT_ID/$TENANT_ID/g" $VALS_DIR/k8s-monitoring.yaml
-  bash ../../../scripts/helmctl.sh "install" "-c" "./release/k8s-monitoring.yaml"
+  bash ../../../scripts/helmctl "install" "-c" "./release/k8s-monitoring.yaml"
 
   progress "Installing Grafana"
   sed -i "s/TENANT_ID/$TENANT_ID/g" $VALS_DIR/grafana.yaml
   sed -i "s/TENANT_PW/$TENANT_PW/g" $VALS_DIR/grafana.yaml
-  bash ../../../scripts/helmctl.sh "install" "-c" "./release/grafana.yaml"
+  bash ../../../scripts/helmctl "install" "-c" "./release/grafana.yaml"
 
   ### list deployed helm releases
   progress "Installed applications"
@@ -60,7 +60,7 @@ function setup() {
 }
 
 function adminpw() {
-  echo "Grafana admin initial password:"
+  progress "Grafana admin initial password:"
   kubectl get secret --namespace monitoring grafana \
       -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 }
