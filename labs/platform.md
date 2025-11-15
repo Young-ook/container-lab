@@ -1,11 +1,15 @@
 # Platform Engineering Lab
 
 ## Table of Contents
+- [kind](#kind)
 - [Grafana](#grafana)
 - [Devtron](#devtron)
 
+## kind
+kind (Kubernetes IN Docker) is a tool for running local Kubernetes clusters using Docker container 'nodes'. Please follow the [instructions](kind/kind.md) to enable your local Kubernetes cluster if you don't have testing environment for other labs.
+
 ## Grafana
-This is the [instructions](grafana/grafana.md) explains how to run a local Grafana observability stack.
+Grafana is a multi-platform open source analytics and interactive visualization web application. Follow the [instructions](grafana/grafana.md) to run a observability stack.
 
 ## Devtron
-This is the [instructions](devtron/devtron.md) explains how to run a local Devtron platform stack.
+Devtron is a tool provides clear visibility into your Kubernetes clusters and streamlines distributed app management through a single, intuitive interface. Follow the [instructions](devtron/devtron.md) to run Devtron platform.
