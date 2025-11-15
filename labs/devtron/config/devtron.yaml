@@ -1,0 +1,9 @@
+---
+installer:
+  modules:
+    - cicd     # CI/CD module
+    - gitops   # GitOps (ArgoCD) module
+
+argo-cd:
+  enabled: true
+

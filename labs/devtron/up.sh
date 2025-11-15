@@ -2,9 +2,6 @@
 
 VALS_DIR='./config'
 
-DEVTRON_CHART_VER=9.2.10
-
-
 function progress() {
   echo "+----------------------------------------------+"
   echo " $1 "
@@ -20,12 +17,9 @@ function helmrepo() {
 }
 
 function setup() {
-  progress "Installing Devtron"
   ### apps
-  helm upgrade --install devtron -n devtroncd devtron/devtron-operator \
-      --set installer.modules={cicd} \
-      --set argo-cd.enabled=true \
-      --create-namespace
+  progress "Installing Devtron"
+  bash ../../scripts/helmctl "install" "-c" "./release/devtron.yaml"
 
   ### list deployed helm releases
   progress "Installed applications"
@@ -33,7 +27,8 @@ function setup() {
 }
 
 function adminpw() {
-  echo "Devtron admin initial password:"
+  sleep 5;
+  progress "Devtron admin initial password:"
   kubectl -n devtroncd get secret devtron-secret \
       -o jsonpath='{.data.ADMIN_PASSWORD}' | base64 -d ; echo
 }
