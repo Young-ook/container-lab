@@ -1,0 +1,8 @@
+---
+release: k8s-monitoring
+chart: grafana/k8s-monitoring
+version: 3.1.2
+namespace: alloy
+values:
+- './config/k8s-monitoring.yaml'
+
