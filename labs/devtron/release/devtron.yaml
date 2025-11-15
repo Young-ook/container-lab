@@ -1,0 +1,8 @@
+---
+release: devtron
+chart: devtron/devtron-operator
+version: 0.22.98
+namespace: devtroncd
+values:
+- './config/devtron.yaml'
+
