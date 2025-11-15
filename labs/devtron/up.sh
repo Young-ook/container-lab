@@ -2,9 +2,6 @@
 
 VALS_DIR='./config'
 
-DEVTRON_CHART_VER=9.2.10
-
-
 function progress() {
   echo "+----------------------------------------------+"
   echo " $1 "
