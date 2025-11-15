@@ -5,18 +5,23 @@
 - [User Guide: Install Devtron OSS](https://docs.devtron.ai/install/devtron-oss)
 
 
-## Install
-Run the `up.sh` setup script to install and get a automatically generated initial admin password:
+## Quick Start
+For quickstart, run bootstrap script:
 ```
-kubectl --namespace devtroncd get secret devtron-secret -o jsonpath='{.data.ADMIN_PASSWORD}' | base64 -d ; echo
+bash up.sh
 ```
 
-Open localhost:8000 to access Devtron through port forwarding and login as admin with the initial password:
+After installation, get an initial admin password, then, open localhost:8000 to access Devtron through port forwarding and login as admin with the initial password:
 ```
+kubectl --namespace devtroncd get secret devtron-secret -o jsonpath='{.data.ADMIN_PASSWORD}' | base64 -d ; echo
 kubectl --namespace devtroncd port-forward service/devtron-service 8000:80
 ```
 
-![devtron-quickstart](../../images/devtron/quickstart.png)
+Clean up:
+```
+bash clean.sh
+```
+
 ![devtron-cluster-mgmt](../../images/devtron/cluster-mgmt.png)
 
 ## Application Management
