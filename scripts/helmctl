@@ -1,9 +1,10 @@
 #!/bin/bash
 
+set -e
 declare -a HELM_ARGS
 
 usage() {
-    echo "Usage: $0 [install|diff|update|uninstall] -c|--config <path to YAML config file>"
+    echo "Usage: $0 [deploy|diff|uninstall] -c|--config <path to YAML config file>"
     exit 1
 }
 
@@ -20,7 +21,7 @@ prep_req () {
 
     # Check if helm 'diff' plugin is installed
     if ! helm plugin list | grep -q "diff"; then
-        echo "helm 'diff' plugin not found. Installing now..."
+        echo "Error: helm 'diff' plugin not found. Installing now..."
         helm plugin install "https://github.com/databus23/helm-diff"
         echo "✓ helm diff plugin $(helm diff version) is installed."
     else
@@ -69,20 +70,20 @@ load_config () {
     done < <(yq e '.values[]?' "$helm_conf")
 }
 
-install() {
-    echo "Installing package: ${HELM_ARGS[0]}"
+deploy() {
+    echo "Deploy: ${HELM_ARGS[0]}"
     helm upgrade --install "${HELM_ARGS[@]}" \
         --create-namespace
 }
 
 diff() {
-    echo "Preview changes on package: ${HELM_ARGS[0]}"
+    echo "Preview changes: ${HELM_ARGS[0]}"
     helm diff upgrade "${HELM_ARGS[@]}" \
         -C 4 --three-way-merge
 }
 
 uninstall() {
-    echo "Removing package: ${HELM_ARGS[0]}"
+    echo "Remove: ${HELM_ARGS[0]}"
     helm uninstall "${HELM_ARGS[0]}" -n "${HELM_ARGS[5]}"
 #        --cascade foreground
 }
@@ -95,32 +96,33 @@ if [[ $# -eq 0 ]]; then
 fi
 
 COMMAND="$1"
-case "$COMMAND" in
+case "${COMMAND}" in
+    deploy)
+        load_config "$@"
+        diff
+        read -p "✓ Do you want to apply the changes? [y/n]: " choice
+        case $choice in
+            y) deploy ;;
+            *) echo "✓ Cancelled by user."
+        esac
+        ;;
     diff)
         load_config "$@"
         diff
         ;;
-    install)
-        load_config "$@"
-        install
-        ;;
     uninstall)
         load_config "$@"
-        uninstall
-        ;;
-    update)
-        load_config "$@"
-        diff
-        read -p "Do you want to apply the changes? [y/n]: " choice
+        read -p "✓ Do you want to uninstall? [y/n]: " choice
         case $choice in
-            y) install ;;
+            y) uninstall ;;
+            *) echo "✓ Cancelled by user."
         esac
         ;;
     help)
         usage
         ;;
     *)
-        echo "Error: Unknown command '$COMMAND'" >&2
+        echo "Error: Unknown command '${COMMAND}'" >&2
         usage
         ;;
 esac
