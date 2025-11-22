@@ -68,6 +68,11 @@ load_config () {
             HELM_ARGS+=(--values "$val_file")
         fi
     done < <(yq e '.values[]?' "$helm_conf")
+
+    kube_ctx=$(yq e '.context' "$helm_conf")
+    if [ -n "$kube_ctx" ] && [ "$kube_ctx" != "null" ]; then
+        HELM_ARGS+=(--kube-context "$kube_ctx")
+    fi
 }
 
 deploy() {
