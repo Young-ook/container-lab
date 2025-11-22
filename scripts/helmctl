@@ -76,21 +76,41 @@ load_config () {
 }
 
 deploy() {
-    echo "Deploy: ${HELM_ARGS[0]}"
-    helm upgrade --install "${HELM_ARGS[@]}" \
-        --create-namespace
+    read -p "✓ Do you want to deploy '${HELM_ARGS[0]}'? [y/n]: " choice
+    case $choice in
+        y)
+            echo "Deploy: ${HELM_ARGS[0]}"
+            helm upgrade --install "${HELM_ARGS[@]}" \
+                --create-namespace
+            ;;
+        *) echo "✓ Cancelled by user." ;;
+    esac
 }
 
 diff() {
-    echo "Preview changes: ${HELM_ARGS[0]}"
-    helm diff upgrade "${HELM_ARGS[@]}" \
-        -C 4 --three-way-merge
+    # Check if the captured variable is NOT an empty string
+    found_release=$(helm list -f "^${HELM_ARGS[0]}$" -q -A --deployed 2>/dev/null)
+
+    if [ -n "$found_release" ]; then
+        # Release found (string is not empty)
+        echo "Preview changes: ${HELM_ARGS[0]}"
+        helm diff upgrade "${HELM_ARGS[@]}" \
+            --context 4 --three-way-merge
+    else
+        echo "Error: '${HELM_ARGS[0]}' not found"
+    fi
 }
 
 uninstall() {
-    echo "Remove: ${HELM_ARGS[0]}"
-    helm uninstall "${HELM_ARGS[0]}" -n "${HELM_ARGS[5]}"
-#        --cascade foreground
+    read -p "✓ Do you want to uninstall '${HELM_ARGS[0]}'? [y/n]: " choice
+    case $choice in
+        y)
+            echo "Remove: ${HELM_ARGS[0]}"
+            helm uninstall "${HELM_ARGS[0]}" -n "${HELM_ARGS[5]}"
+            #    --cascade foreground
+            ;;
+        *) echo "✓ Cancelled by user." ;;
+    esac
 }
 
 ### Main script logic
@@ -105,11 +125,7 @@ case "${COMMAND}" in
     deploy)
         load_config "$@"
         diff
-        read -p "✓ Do you want to apply the changes? [y/n]: " choice
-        case $choice in
-            y) deploy ;;
-            *) echo "✓ Cancelled by user."
-        esac
+        deploy
         ;;
     diff)
         load_config "$@"
@@ -117,11 +133,7 @@ case "${COMMAND}" in
         ;;
     uninstall)
         load_config "$@"
-        read -p "✓ Do you want to uninstall? [y/n]: " choice
-        case $choice in
-            y) uninstall ;;
-            *) echo "✓ Cancelled by user."
-        esac
+        uninstall
         ;;
     help)
         usage
