@@ -11,12 +11,12 @@ usage() {
 prep_req () {
     local tool_conf=".helmctl.conf"
 
-    # Check if 'yq' is installed
-    if ! command -v yq &> /dev/null; then
-        echo "Error: yq is not installed. Please install it to proceed." >&2
+    # Check if 'helm' is installed
+    if ! command -v helm &> /dev/null; then
+        echo "Error: helm is not installed. Please install it to proceed." >&2
         exit 1
     else
-        echo "✓ $(yq --version) found."
+        echo "✓ helm $(helm version --short) found."
     fi
 
     # Check if helm 'diff' plugin is installed
@@ -27,6 +27,17 @@ prep_req () {
     else
         echo "✓ helm diff plugin $(helm diff version) found."
     fi
+
+    # Check if 'yq' is installed
+    if ! command -v yq &> /dev/null; then
+        echo "Error: yq is not installed. Please install it to proceed." >&2
+        exit 1
+    else
+        echo "✓ $(yq --version) found."
+    fi
+
+    # new line 
+    echo ""
 }
 
 load_config () {
