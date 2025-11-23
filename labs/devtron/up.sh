@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash
+
+set -e
 
 VALS_DIR='./config'
 
@@ -19,7 +21,7 @@ function helmrepo() {
 function setup() {
   ### apps
   progress "Installing Devtron"
-  bash ../../scripts/helmctl "install" "-c" "./release/devtron.yaml"
+  bash ../../scripts/helmctl "deploy" "-c" "./release/devtron.yaml"
 
   ### list deployed helm releases
   progress "Installed applications"

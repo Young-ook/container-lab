@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 VALS_DIR='./config'
 TENANT_ID=tenant1
 TENANT_PW=tenant1
@@ -37,22 +39,22 @@ function setup() {
 
   ### apps
   progress "Installing Loki"
-  bash ../../../scripts/helmctl "install" "-c" "./release/loki.yaml"
+  bash ../../../scripts/helmctl "deploy" "-c" "./release/loki.yaml"
 
   progress "Installing Mimir"
-  bash ../../../scripts/helmctl "install" "-c" "./release/mimir.yaml"
+  bash ../../../scripts/helmctl "deploy" "-c" "./release/mimir.yaml"
 
   #progress "Installing Tempo"
-  #bash ../../../scripts/helmctl "install" "-c" "./release/tempo.yaml"
+  #bash ../../../scripts/helmctl "deploy" "-c" "./release/tempo.yaml"
 
   progress "Installing Alloy"
   sed -i "s/TENANT_ID/$TENANT_ID/g" $VALS_DIR/k8s-monitoring.yaml
-  bash ../../../scripts/helmctl "install" "-c" "./release/k8s-monitoring.yaml"
+  bash ../../../scripts/helmctl "deploy" "-c" "./release/k8s-monitoring.yaml"
 
   progress "Installing Grafana"
   sed -i "s/TENANT_ID/$TENANT_ID/g" $VALS_DIR/grafana.yaml
   sed -i "s/TENANT_PW/$TENANT_PW/g" $VALS_DIR/grafana.yaml
-  bash ../../../scripts/helmctl "install" "-c" "./release/grafana.yaml"
+  bash ../../../scripts/helmctl "deploy" "-c" "./release/grafana.yaml"
 
   ### list deployed helm releases
   progress "Installed applications"
