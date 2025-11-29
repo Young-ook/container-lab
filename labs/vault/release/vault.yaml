@@ -1,0 +1,8 @@
+---
+release: vault
+chart: hashicorp/vault
+version: 0.31.0
+namespace: vault
+values:
+- './config/vault.yaml'
+

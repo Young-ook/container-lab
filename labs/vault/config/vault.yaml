@@ -1,0 +1,17 @@
+---
+server:
+  enabled: true
+
+  # Dev mode for local development (auto-unseals, in-memory storage)
+  dev:
+    enabled: true
+    devRootToken: "root"
+
+ui:
+  enabled: true
+  serviceType: "ClusterIP"
+  externalPort: 8200
+
+injector:
+  enabled: false
+
