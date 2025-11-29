@@ -3,9 +3,34 @@
 set -e
 declare -a HELM_ARGS
 
-usage() {
-    echo "Usage: $0 [deploy|diff|uninstall] -c|--config <path to YAML config file>"
+VERSION=1.0.0
+
+version() {
+    echo "Version: $VERSION"
     exit 1
+}
+
+usage() {
+    echo "Usage: $0 [deploy|diff|uninstall|version] -c|--config <path to YAML config file>"
+    exit 1
+}
+
+eval_kube () {
+    # Check if 'kubectl' is installed
+    if ! command -v kubectl &> /dev/null; then
+        echo "Error: kubectl is not installed or not in PATH. Please install it and ensure it is accessible." >&2
+        exit 1
+    fi
+
+    # Check if 'Kubernetes cluster' is running
+    if ! kubectl cluster-info &> /dev/null; then
+        echo "Error: Kubernetes cluster is not running or not accessible." >&2
+        exit 1
+    else
+        echo "✓ Kubernetes cluster is running."
+	kubectl cluster-info | head -n 1
+        echo "" # new line
+    fi
 }
 
 prep_req () {
@@ -13,7 +38,7 @@ prep_req () {
 
     # Check if 'helm' is installed
     if ! command -v helm &> /dev/null; then
-        echo "Error: helm is not installed. Please install it to proceed." >&2
+        echo "Error: helm is not installed or not in PATH. Please install it and ensure it is accessible." >&2
         exit 1
     else
         echo "✓ helm $(helm version --short) found."
@@ -34,10 +59,10 @@ prep_req () {
         exit 1
     else
         echo "✓ $(yq --version) found."
+        echo "" # new line
     fi
 
-    # new line 
-    echo ""
+    eval_kube
 }
 
 load_config () {
@@ -125,8 +150,6 @@ uninstall() {
 }
 
 ### Main script logic
-prep_req
-
 if [[ $# -eq 0 ]]; then
     usage
 fi
@@ -134,20 +157,26 @@ fi
 COMMAND="$1"
 case "${COMMAND}" in
     deploy)
+        prep_req
         load_config "$@"
         diff
         deploy
         ;;
     diff)
+        prep_req
         load_config "$@"
         diff
         ;;
     uninstall)
+        prep_req
         load_config "$@"
         uninstall
         ;;
     help)
         usage
+        ;;
+    version)
+        version
         ;;
     *)
         echo "Error: Unknown command '${COMMAND}'" >&2
