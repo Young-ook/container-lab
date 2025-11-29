@@ -12,10 +12,13 @@ function progress() {
 
 function uninstall() {
   ### apps
+  progress "Uninstalling Vault Secrets Operator"
+  bash ../../scripts/helmctl "uninstall" "-c" "./release/vault-secrets-operator.yaml"
+
   progress "Uninstalling Vault"
   bash ../../scripts/helmctl "uninstall" "-c" "./release/vault.yaml"
 
-  kubectl delete ns vault
+  kubectl delete ns vault vault-secrets-operator-system
 }
 
 ### main
