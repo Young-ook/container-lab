@@ -114,12 +114,14 @@ load_config () {
 deploy() {
     read -p "✓ Do you want to deploy '${HELM_ARGS[0]}'? [y/n]: " choice
     case $choice in
-        y)
+        yes|y)
             echo "Deploy: ${HELM_ARGS[0]}"
             helm upgrade --install "${HELM_ARGS[@]}" \
                 --create-namespace
             ;;
-        *) echo "✓ Cancelled by user." ;;
+        *) echo "✓ Cancelled by user."
+            exit 1
+            ;;
     esac
 }
 
@@ -140,12 +142,14 @@ diff() {
 uninstall() {
     read -p "✓ Do you want to uninstall '${HELM_ARGS[0]}'? [y/n]: " choice
     case $choice in
-        y)
+        yes|y)
             echo "Remove: ${HELM_ARGS[0]}"
             helm uninstall "${HELM_ARGS[0]}" -n "${HELM_ARGS[5]}"
             #    --cascade foreground
             ;;
-        *) echo "✓ Cancelled by user." ;;
+        *) echo "✓ Cancelled by user."
+            exit 1
+            ;;
     esac
 }
 
