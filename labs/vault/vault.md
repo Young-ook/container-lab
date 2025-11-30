@@ -4,10 +4,8 @@
 - [HashiCorp Vault GitHub](https://github.com/hashicorp/vault)
 - [Developer Guide: HashiCorp Vault](https://developer.hashicorp.com/vault)
 
-
 ## Quick Start
 The versions required are:
-
 - Helm 3.6+
 - Kubernetes 1.29+
 
@@ -37,3 +35,5 @@ server:
       value: "true"
 ```
 
+## Resources
+- [Manage Kubernetes native secrets with the Vault Secrets Operator](https://developer.hashicorp.com/vault/tutorials/kubernetes-introduction/vault-secrets-operator)
