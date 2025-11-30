@@ -18,6 +18,7 @@ function uninstall() {
   progress "Uninstalling Vault"
   bash ../../scripts/helmctl "uninstall" "-c" "./release/vault.yaml"
 
+  kubectl get crd -o name | grep "secrets.hashicorp.com" | xargs -r kubectl delete
   kubectl delete ns vault vault-secrets-operator-system
 }
 
