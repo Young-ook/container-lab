@@ -31,7 +31,7 @@ bash up.sh
 >
 > For secure and reliable vault server operation, don't forget to disable `dev mode`. For more information, please check out the [HashiCorp Vault Deverloper Guide: Seal/Unseal](https://developer.hashicorp.com/vault/docs/concepts/seal).
 
-After vault server and vault secrets operator install, you can access vault UI via port forwarding. Run this commend to enable port forwarding and open localhost:8200 in your browser
+After vault server and vault secrets operator install, you can access vault UI via port forwarding. Run this commend to enable port forwarding and open localhost:8200 in your browser:
 
 ```bash
 kubectl -n vault port-forward svc/vault-ui 8200
