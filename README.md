@@ -96,6 +96,7 @@ You will see nodes, which means your cluster is up and running. If you want more
 
 # Labs
 - [Platform Engineering](labs/platform.md)
+- [Security Engineering](labs/security.md)
 
 # Troubleshooting
 - [Describe listening ports](https://phoenixnap.com/kb/linux-check-open-ports)
