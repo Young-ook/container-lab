@@ -14,16 +14,16 @@ function uninstall() {
   helm uninstall -n alloy k8s-monitoring --cascade foreground
 
   progress "Uninstalling Grafana"
-  bash ../../scripts/helmctl "uninstall" "./release/grafana.yaml"
+  bash ../../../scripts/helmctl "uninstall" "./release/grafana.yaml"
 
   progress "Uninstalling Loki"
-  bash ../../scripts/helmctl "uninstall" "./release/loki.yaml"
+  bash ../../../scripts/helmctl "uninstall" "./release/loki.yaml"
 
   progress "Uninstalling Mimir"
-  bash ../../scripts/helmctl "uninstall" "./release/mimir.yaml"
+  bash ../../../scripts/helmctl "uninstall" "./release/mimir.yaml"
 
-  #progress "Uninstalling Temp"
-  #bash ../../scripts/helmctl "uninstall" "./release/tempo.yaml"
+  #progress "Uninstalling Tempo"
+  #bash ../../../scripts/helmctl "uninstall" "./release/tempo.yaml"
 
   kubectl delete ns alloy loki mimir monitoring tempo
 }
