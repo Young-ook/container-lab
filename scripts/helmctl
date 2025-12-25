@@ -11,7 +11,7 @@ version() {
 }
 
 usage() {
-    echo "Usage: $0 [deploy|diff|uninstall|version] -c|--config <path to YAML config file>"
+    echo "Usage: $0 [deploy|diff|uninstall|version] <path to YAML config file>"
     exit 1
 }
 
@@ -69,27 +69,22 @@ load_config () {
     local script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
     local helm_conf=""
 
-    if [[ $# -eq 0 ]]; then
-        echo "Error: Configuration file is required."
-        usage
-        exit 1
-    fi
-
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-            -c|--config)
-		helm_conf="$2"
-                shift
-                ;;
-            *)
-                shift
-                ;;
-        esac
+    # traverse all params to find a config (yaml|yml) file
+    # if found, exit the loop
+    for arg in "$@"; do
+        if [[ "$arg" == *.yaml || "$arg" == *.yml ]]; then
+            helm_conf="$arg"
+            break 
+        fi
     done
 
-    if [[ "$helm_conf" = "" || ! -f "$helm_conf" ]]; then
-        echo "Error: Configuration file is required."
+    # verify the config file
+    if [[ -z "$helm_conf" ]]; then
+        echo "Error: No .yaml or .yml file is provided."
         usage
+        exit 1
+    elif [[ ! -f "$helm_conf" ]]; then
+        echo "Error: Configuration file '$helm_conf' does not exist."
         exit 1
     fi
 
