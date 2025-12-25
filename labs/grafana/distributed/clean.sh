@@ -1,9 +1,35 @@
 #!/bin/bash
 
-helm uninstall -n alloy k8s-monitoring --cascade foreground
-helm uninstall -n monitoring grafana
-helm uninstall -n loki loki
-helm uninstall -n mimir mimir
-#helm uninstall -n tempo tempo
+set -e
 
-kubectl delete ns alloy loki mimir monitoring tempo
+VALS_DIR='./config'
+
+function progress() {
+  echo "+----------------------------------------------+"
+  echo " $1 "
+  echo "+----------------------------------------------+"
+}
+
+function uninstall() {
+  ### apps
+  progress "Uninstalling k8s monitoring"
+  helm uninstall -n alloy k8s-monitoring --cascade foreground
+
+  progress "Uninstalling Grafana"
+  bash ../../scripts/helmctl "uninstall" "./release/grafana.yaml"
+
+  progress "Uninstalling Loki"
+  bash ../../scripts/helmctl "uninstall" "./release/loki.yaml"
+
+  progress "Uninstalling Mimir"
+  bash ../../scripts/helmctl "uninstall" "./release/mimir.yaml"
+
+  #progress "Uninstalling Temp"
+  #bash ../../scripts/helmctl "uninstall" "./release/tempo.yaml"
+
+  kubectl delete ns alloy loki mimir monitoring tempo
+}
+
+### main
+uninstall
+
