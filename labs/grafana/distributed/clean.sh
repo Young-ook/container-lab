@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 VALS_DIR='./config'
 
 function progress() {
