@@ -25,6 +25,7 @@ function uninstall() {
   #progress "Uninstalling Tempo"
   #bash ../../../scripts/helmctl "uninstall" "./release/tempo.yaml"
 
+  progress "Eliminating namespaces"
   kubectl delete ns alloy loki mimir monitoring tempo
 }
 
