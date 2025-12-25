@@ -21,7 +21,7 @@ function helmrepo() {
 function setup() {
   ### apps
   progress "Installing Devtron"
-  bash ../../scripts/helmctl "deploy" "-c" "./release/devtron.yaml"
+  bash ../../scripts/helmctl "deploy" "./release/devtron.yaml"
 
   ### list deployed helm releases
   progress "Installed applications"
