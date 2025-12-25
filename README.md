@@ -83,7 +83,7 @@ Open Docker Desktop and go to *Settings > Resources > WSL Integration* to verify
 
 In Docker Desktop, navigate to *Settings > Kubernetes* and check the box for *Enable Kubernetes* and click **Apply & Restart**. Then, wait for Docker Desktop to download the necessary Kubernetes components. The Kubernetes icon will turn green once it's ready.
 
-![wsl-docker-kube-enabled](images/wsl-docker-kube-enabled.png)
+![wsl-docker-kube-enabled](images/kind/wsl-docker-kube-enabled.png)
 
 The default cluster is single-node cluster based on 'Kubeadmin', which is good for almost local test cases. However, some environments need multiple nodes for high-availability deployment. Select *kind* in the *Cluster settings* and click **Apply & Restart** to change the cluster provisioning method. It requires restarting Kubernetes cluster. For more information about KinD (Kubernetes IN Docker), please refer to [the instructions](labs/kind/kind.md) of platform lab.
 
