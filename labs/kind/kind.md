@@ -52,7 +52,7 @@ kind delete cluster --name <name>
 ## minikube
 [minikube](https://github.com/kubernetes/minikube) is local Kubernetes, focusing on making it easy to learn and develop for Kubernetes. With minikube, you can run local Kubernetes in a single command with Docker (or similarly compatible) container or a Virtual Machine environment.
 
-This is the official [minikube Quickstart guide](https://minikube.sigs.k8s.io/docs/start/), follow the instructions from installation minikube on your environment and deploy an example application.
+This is the official [minikube quickstart guide](https://minikube.sigs.k8s.io/docs/start/), follow the instructions from installation minikube on your environment and deploy an example application.
 
 If you are familiar to [asdf](../../README.md#asdf) a multi-runtime tool manage, you can simply install it using asdf commands.
 ```sh
