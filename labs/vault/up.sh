@@ -21,10 +21,10 @@ function helmrepo() {
 function setup() {
   ### apps
   progress "Installing Vault"
-  bash ../../scripts/helmctl "deploy" "-c" "./release/vault.yaml"
+  bash ../../scripts/helmctl "deploy" "./release/vault.yaml"
 
   progress "Installing Vault Secrets Operator"
-  bash ../../scripts/helmctl "deploy" "-c" "./release/vault-secrets-operator.yaml"
+  bash ../../scripts/helmctl "deploy" "./release/vault-secrets-operator.yaml"
 
   ### list deployed helm releases
   progress "Installed applications"

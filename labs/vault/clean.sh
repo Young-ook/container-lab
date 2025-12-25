@@ -14,10 +14,10 @@ function uninstall() {
 
   ### apps
   progress "Uninstalling Vault Secrets Operator"
-  bash ../../scripts/helmctl "uninstall" "-c" "./release/vault-secrets-operator.yaml"
+  bash ../../scripts/helmctl "uninstall" "./release/vault-secrets-operator.yaml"
 
   progress "Uninstalling Vault"
-  bash ../../scripts/helmctl "uninstall" "-c" "./release/vault.yaml"
+  bash ../../scripts/helmctl "uninstall" "./release/vault.yaml"
 
   kubectl get crd -o name | grep "secrets.hashicorp.com" | xargs -r kubectl delete
   kubectl delete ns vault vault-secrets-operator-system
