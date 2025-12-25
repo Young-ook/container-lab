@@ -11,7 +11,27 @@ version() {
 }
 
 usage() {
-    echo "Usage: $0 [deploy|diff|uninstall|version] <path to YAML config file>"
+    echo "Usage: $0 [deploy|diff|uninstall|version] <FILE.yaml|FILE.yml>"
+    echo ""
+    echo "Description:"
+    echo "  This is a tool that manages a Helm application from with a .yaml or .yml config file."
+    echo ""
+    echo "Options:"
+    echo "  deploy     Install or Upgrade an application"
+    echo "  diff       Show preview of application changes"
+    echo "  uninstall  Uninstall an application"
+    echo "  help       Show this help message and exit"
+    echo "  version    Show the version"
+    echo ""
+    echo "Example: $0 config.yaml"
+    echo ""
+    echo "  config.yaml:"
+    echo "  ---"
+    echo "  release: grafana"
+    echo "  chart: grafana/grafana"
+    echo "  version: 9.2.10"
+    echo "  namespace: monitoring"
+    echo ""
     exit 1
 }
 
@@ -74,7 +94,7 @@ load_config () {
     for arg in "$@"; do
         if [[ "$arg" == *.yaml || "$arg" == *.yml ]]; then
             helm_conf="$arg"
-            break 
+            break
         fi
     done
 
@@ -150,6 +170,7 @@ uninstall() {
 
 ### Main script logic
 if [[ $# -eq 0 ]]; then
+    echo "Error: No parameters provided. Please check help description."
     usage
 fi
 
