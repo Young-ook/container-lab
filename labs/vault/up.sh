@@ -33,7 +33,7 @@ function setup() {
 
 function init() {
   ### vault auth and secret initialization
-  local wait=60
+  local wait=90
 
   progress "Waiting ${wait}s for Vault server bootsrappting"
   sleep $wait
@@ -64,9 +64,6 @@ EOF
   kubectl exec -n vault vault-0 -- \
     vault write auth/demo-kube/config \
       kubernetes_host="$KUBERNETES_HOST"
-
-  kubectl exec -n vault vault-0 -- \
-    vault write auth/demo-kube/config \
 
   kubectl exec -n vault vault-0 -- \
     vault write auth/demo-kube/role/vso-role \
