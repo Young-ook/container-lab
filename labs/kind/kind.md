@@ -42,6 +42,8 @@ Delete cluster:
 kind delete cluster --name <name>
 ```
 
+![kind](../../images/kind/kind.png)
+
 # Troubleshooting
 - [kind](https://kind.sigs.k8s.io/docs/user/known-issues/#troubleshooting-kind)
 
@@ -64,5 +66,5 @@ Start your cluster.
 minikube start
 ```
 
-![minikube](../../images/minikube.png)
+![minikube](../../images/kind/minikube.png)
 
