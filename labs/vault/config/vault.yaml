@@ -1,6 +1,7 @@
 ---
 server:
   enabled: true
+  logLevel: debug
 
   # Dev mode for local development (auto-unseals, in-memory storage)
   dev:

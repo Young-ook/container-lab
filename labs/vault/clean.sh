@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 VALS_DIR='./config'
 
 function progress() {
@@ -11,6 +9,9 @@ function progress() {
 }
 
 function uninstall() {
+  ### remove demo
+  kubectl delete -f secret/vaultkv.yaml
+
   ### apps
   progress "Uninstalling Vault Secrets Operator"
   bash ../../scripts/helmctl "uninstall" "-c" "./release/vault-secrets-operator.yaml"
