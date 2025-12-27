@@ -96,6 +96,7 @@ You will see nodes, which means your cluster is up and running. If you want more
 
 # Labs
 - [Platform Engineering](labs/platform.md)
+- [Reliability Engineering](labs/reliability.md)
 - [Security Engineering](labs/security.md)
 
 # Troubleshooting
