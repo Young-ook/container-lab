@@ -1,0 +1,8 @@
+---
+release: litmus
+chart: litmuschaos/litmus
+version: 3.22.0
+namespace: litmus
+values:
+- './config/litmus.yaml'
+
