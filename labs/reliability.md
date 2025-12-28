@@ -9,4 +9,3 @@ Grafana is a multi-platform open source analytics and interactive visualization 
 
 ## Litmus
 Litmus is an open source Chaos Engineering platform that enables teams to improve service reliability by inducing fault injection experiments in a controlle way. Follow the instructions in [litmus.md](litmus/litmus.md).
-
