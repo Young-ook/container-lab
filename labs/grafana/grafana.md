@@ -41,3 +41,7 @@ docker compose down
 ![grafana-loki-log](../../images/grafana/loki-log.png)
 ![grafana-mimir-metric](../../images/grafana/mimir-metric.png)
 ![grafana-tempo-service-map](../../images/grafana/tempo-service-map.png)
+
+# Additional Resources
+- [Introduction to Metrics, Logs, Traces, and Profiles (MLTP) in Grafana](https://github.com/grafana/intro-to-mltp)
+
