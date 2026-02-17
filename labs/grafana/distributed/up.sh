@@ -47,14 +47,14 @@ function setup() {
   #progress "Installing Tempo"
   #bash ../../../scripts/helmctl "deploy" "./release/tempo.yaml"
 
-  progress "Installing Alloy"
-  sed -i "s/TENANT_ID/$TENANT_ID/g" $VALS_DIR/k8s-monitoring.yaml
-  bash ../../../scripts/helmctl "deploy" "./release/k8s-monitoring.yaml"
-
   progress "Installing Grafana"
   sed -i "s/TENANT_ID/$TENANT_ID/g" $VALS_DIR/grafana.yaml
   sed -i "s/TENANT_PW/$TENANT_PW/g" $VALS_DIR/grafana.yaml
   bash ../../../scripts/helmctl "deploy" "./release/grafana.yaml"
+
+  progress "Installing Alloy"
+  sed -i "s/TENANT_ID/$TENANT_ID/g" $VALS_DIR/k8s-monitoring.yaml
+  bash ../../../scripts/helmctl "deploy" "./release/k8s-monitoring.yaml"
 
   ### list deployed helm releases
   progress "Installed applications"
