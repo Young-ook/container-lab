@@ -29,79 +29,56 @@ Here is a breakdown of the Kubernetes service types:
   - A recommended service type for external-facing service leveraging cloud provider load balancers (Layer 4). It automatically creates a NodePort and a ClusterIP, serving as an extension of both, to route traffic directly to pods.
   - **Use Case:** Production applications needing high availability and automatic, public/internet-facing load balancing.
 
+This is the diagram shows traffic flow of Kubernetes service types:
+```mermaid
+graph TD
+    subgraph "External Network"
+        User((User/Client))
+    end
+
+    subgraph "Cloud Provider Infrastructure"
+        LB[Cloud Load Balancer]
+    end
+
+    subgraph "Kubernetes Cluster"
+        subgraph "Worker Node 1"
+            NP_1[NodePort: 30000+]
+            Pod1[Backend Pod A]
+            OtherPod[Internal Frontend Pod]
+        end
+
+        subgraph "Worker Node 2"
+            NP_2[NodePort: 30000+]
+            Pod2[Backend Pod B]
+        end
+
+        CIP[ClusterIP Service]
+    end
+
+    %% ClusterIP Flow (Internal)
+    OtherPod -- "1. Internal Request" --> CIP
+    CIP --> Pod1
+    CIP --> Pod2
+
+    %% NodePort Flow (Direct to Node)
+    User -. "2. Node IP : Port" .-> NP_1
+    NP_1 --> CIP
+
+    %% LoadBalancer Flow (Cloud Managed)
+    User -- "3. Public IP" --> LB
+    LB --> NP_1
+    LB --> NP_2
+    NP_2 --> CIP
+```
+
 Other service types:
 - **ExternalName**
-  - A service type, providing maps the a service to a DNS name using a CNAME record. This is commonly used to create a service within Kubernetes to represent an external DNS endpoint (e.g., an external database or API).
-  - **Use Case:** Accessing external services (e.g., an external database) rather than pods or during application migration. 
+  - A service type acts as a DNS alias (CNAME record) that maps an internal Kubernetes service name to a DNS name outside the cluster (e.g., *mydb.example.com*). It allows pods to use a local service name for an external service (an external database or API). Unlike other service types, it does not use selectors or proxy traffic; it purely handles redirection at the DNS level.
+  - **Use Case:** Accessing external services, keeping database or other references while migration
 
 - **Headless Service**
   - A type of ClusterIP that skips assigning a single stable IP, instead returning the IP addresses of all backend pods via DNS.
   - **Use Case:** Stateful applications (e.g., databases) needing direct, client-side load balancing or pod-to-pod discovery without load balancing. Useful for databases or StatefulSets. 
-
-```mermaid
-graph TD
-    subgraph Client
-        User(User)
-        ClusterDNS(Internal DNS)
-        ExternalSource(External Service)
-    end
-
-    subgraph Kubernetes Cluster
-        direction LR
-        subgraph Services
-            C_IP("Service\n(ClusterIP)")
-            N_Port("Service\n(NodePort)")
-            L_B("Service\n(LoadBalancer)")
-            E_Name("Service\n(ExternalName)")
-            H_less("Service\n(Headless)")
-        end
-
-        subgraph Nodes
-            direction TD
-            Node1[Node 1]
-            Node2[Node 2]
-        end
-
-        subgraph Pods
-            PodA[Pod A]
-            PodB[Pod B]
-            PodC[Pod C]
-        end
-
-        %% Connections within the cluster
-        C_IP -- "Internal IP" --> PodA
-        C_IP -- "Internal IP" --> PodB
-
-        N_Port -- "Node IP:NodePort" --> PodA
-        N_Port -- "Node IP:NodePort" --> PodB
-
-        L_B -- "External IP:Port" --> PodA
-        L_B -- "External IP:Port" --> PodB
-
-        H_less -- "Direct DNS Lookup" --> PodC
-
-        %% Traffic flow from clients
-        User -- "Internal Access" --> C_IP
-        User -- "Node IP:NodePort" --> N_Port
-
-        ExternalSource -- "External Load Balancer IP" --> L_B
-
-        ClusterDNS -- "CNAME" --> ExternalSource
-        E_Name -- "Returns CNAME to" --> ClusterDNS
-
-        %% Pod connections
-        PodA -.-> PodB
-        PodC -.-> PodA
-    end
-
-    %% Styles for clarity
-    classDef internal fill:#f9f,stroke:#333,stroke-width:2px;
-    class C_IP,H_less internal;
-    classDef external fill:#ccf,stroke:#333,stroke-width:2px;
-    class N_Port,L_B,E_Name external;
-    classDef component fill:#ffc,stroke:#333,stroke-width:1px;
-    class PodA,PodB,PodC,Node1,Node2,User,ClusterDNS,ExternalSource component;
-```
 
 #### DNS
 Cluster DNS is a DNS server, in addition to the other DNS server(s) in your environment, which serves DNS records for Kubernetes services. Containers started by Kubernetes automatically include this DNS server in their DNS searches
