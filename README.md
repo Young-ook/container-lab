@@ -99,6 +99,7 @@ kubectl get nodes
 You will see nodes, which means your cluster is up and running. If you want more information about enabling Kubernetes with Docker Desktop, please refer to the [Deploy on Kubernetes with Docker Desktop](https://docs.docker.com/desktop/features/kubernetes/).
 
 # Labs
+- [Network Engineering](labs/network.md)
 - [Performance Engineering](labs/performance.md)
 - [Platform Engineering](labs/platform.md)
 - [Reliability Engineering](labs/reliability.md)
