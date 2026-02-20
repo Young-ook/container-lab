@@ -60,7 +60,11 @@ asdf list                 # or helm version
 ```
 
 ## Kubernetes
-Kubernetes, is an open-source platform designed to automate the deployment, scaling, and management of containerized applications. Containers are lightweight, portable units that bundle an application with its dependencies, making them easy to move between environments. Kubernetes ensures these containers run efficiently and reliably across a cluster of machines. This setup allows you to run Kubernetes locally within WSL, providing a seamless development environment. The simplest way is to access the Kubernetes is provided by Docker Desktop.
+Kubernetes, is an open-source platform designed to automate the deployment, scaling, and management of containerized applications. And containers are lightweight, portable units that bundle an application with its dependencies, making them easy to move between environments.
+
+Originally designed by Google, Kubernetes is inspired by Google’s internal cluster management system, [Borg](https://research.google/pubs/large-scale-cluster-management-at-google-with-borg/), it acts as a "cluster operating system" that orchestrates containers across multiple servers/machines, providing high availability, self-healing, and load balancing. As applications scale to hundreds or thousands of containers, manual management becomes impossible. Kubernetes reduces this operational complexity by automating tasks like rollout/rollbacks, storage mounting, and configuration management.
+
+This setup allows you to run Kubernetes locally within WSL, providing a seamless development environment. The simplest way is to access the Kubernetes is provided by Docker Desktop.
 
 > [!IMPORTANT]
 > WSL2 (WSL Version 2) is required to enable local Kubernetes within WSL. Because WSL1 (WSL Version 1) lacks the necessary kernel features for containerization, specifically namespace and cgroup support.
@@ -95,6 +99,7 @@ kubectl get nodes
 You will see nodes, which means your cluster is up and running. If you want more information about enabling Kubernetes with Docker Desktop, please refer to the [Deploy on Kubernetes with Docker Desktop](https://docs.docker.com/desktop/features/kubernetes/).
 
 # Labs
+- [Network Engineering](labs/network.md)
 - [Performance Engineering](labs/performance.md)
 - [Platform Engineering](labs/platform.md)
 - [Reliability Engineering](labs/reliability.md)
@@ -105,4 +110,6 @@ You will see nodes, which means your cluster is up and running. If you want more
 
 # Additional Resources
 - [asdf - The multiple runtime version manager](https://asdf-vm.com/)
+- [Kubernetes Concepts](https://kubernetes.io/docs/concepts/)
 - [Terraform: Amazon EKS Blueprint](https://github.com/Young-ook/terraform-aws-eks/tree/main/examples/blueprint)
+
