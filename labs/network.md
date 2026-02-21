@@ -11,6 +11,9 @@
 ### Components
 
 #### Pod
+Pods are the smallest deployable units of computing in Kubernetes. A Pod consists of one or more containers with shared storage and network resources, along with a specification for how they should run. This concept corresponds to an 'allocation' (or 'alloc') in [Borg](https://research.google/pubs/large-scale-cluster-management-at-google-with-borg/)—Google’s internal cluster management system and the predecessor to Kubernetes—where a group of tasks is scheduled to run together.
+
+The name also appears inspired by modern data center architecture, where a Pod (Point-of-Delivery) is a modular, pre-engineered unit that bundles compute, storage, and networking into a single, repeatable block. Designed for rapid deployment, these physical pods allow enterprises to scale capacity efficiently, a philosophy mirrored by the logical Pods in Kubernetes.
 
 #### Service
 Kubernetes services define how to expose applications running on pods, with 3 main types: **ClusterIP** (internal), **NodePort** (external port), and **LoadBalancer** (cloud provider load balancer). These types determine network accessibility, with ClusterIP as default and LoadBalancer typically used for public-facing production apps. 
@@ -110,4 +113,5 @@ While not a "service type" itself, Ingress is an API object that acts as a smart
 - [Services, Load Balancing, and Networking | Kubernetes](https://kubernetes.io/docs/concepts/services-networking/)
 - [Connecting Applications with Services | Kubernetes](https://kubernetes.io/docs/tutorials/services/connect-applications-service/)
 - [Enhancing DevOps Efficiency on Amazon EKS with Devtron](https://aws.amazon.com/blogs/apn/enhancing-devops-efficiency-on-amazon-eks-with-devtron/)
+- [What Is a Pod? What Is a Cluster?](https://blogs.nvidia.com/blog/what-is-a-cluster-pod/)
 
