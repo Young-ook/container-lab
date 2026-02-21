@@ -44,8 +44,8 @@ kind delete cluster --name <name>
 
 ![kind](../../images/kind/kind.png)
 
-# Troubleshooting
-- [kind](https://kind.sigs.k8s.io/docs/user/known-issues/#troubleshooting-kind)
+## Troubleshooting
+- [kind known issues](https://kind.sigs.k8s.io/docs/user/known-issues/#troubleshooting-kind)
 
 # Alternatives
 
