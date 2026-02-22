@@ -4,13 +4,28 @@
 ## Enable Kubernetes in Docker Desktop
 An easy way to use kind for your local Kubernetes cluster is Docker Desktop and the details are explained in the [instructions](../../README.md#Kubernetes).
 
-## Enable Kubernetes with kind and podman
+## Enable Kubernetes with kind and Docker
+You can install [docker](https://docker.io) directly in your Linux (Debian 12) environment if you don't want complexity of integration between WSL2 and Docker Destkop.
+
+Install docker using `apt` package manager.
+```sh
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+```
+
+Ensure your user is part of the `docker` group to avoid permission issues.
+```sh
+sudo usermod -aG docker $USER
+```
+
+## Enable Kubernetes with kind and Podman
 You can use kind with [podman](https://podman.io) a daemonless container engine on (native or virtual) Debian if you can't use WSL2 or you don't want complexity of integration between WSL2 and Docker Destkop.
 
-To install podman, run apt package manage command:
+To install podman, run `apt` package manage command.
 ```sh
-sudo apt update
-sudo apt install podman
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y podman
 ```
 
 To install kind cli, follow the instructions from the [official installation guide](https://kind.sigs.k8s.io/docs/user/quick-start/#installation). If you are familiar to [asdf](../../README.md#asdf) a multi-runtime tool manage, you can simply install it using asdf commands.
@@ -20,7 +35,7 @@ asdf install kind latest
 asdf set -u kind <version>
 ```
 
-After kind installation, you can create a new kind cluster:
+After kind installation, you can create a new kind cluster.
 ```sh
 kind create cluster
 ```
@@ -30,14 +45,13 @@ Or customize your cluster with config file:
 kind create cluster --config <config.yaml>
 ```
 
-After setup, open your linux terminal and run the following commands to verify Kubernetes is running:
+Verify your Kubernetes is running with kubectl command.
 ```sh
 kubectl version --client
-kubectl get nodes
+kubectl cluster-info
 ```
-You will see nodes, which means your cluster is up and running.
 
-Delete cluster:
+This is the kind command to delete your cluster. We recommend to delete useless clusters for cost efficiency.
 ```sh
 kind delete cluster --name <name>
 ```
