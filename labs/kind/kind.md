@@ -40,7 +40,7 @@ After kind installation, you can create a new kind cluster.
 kind create cluster
 ```
 
-Or customize your cluster with config file:
+Or customize your cluster with config [file](./config/kind.yaml).
 ```sh
 kind create cluster --config <config.yaml>
 ```
