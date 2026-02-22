@@ -5,7 +5,7 @@
 An easy way to use kind for your local Kubernetes cluster is Docker Desktop and the details are explained in the [instructions](../../README.md#Kubernetes).
 
 ## Enable Kubernetes with kind and Docker
-You can install [docker](https://docker.io) directly in your Linux (Debian 12) environment if you don't want complexity of integration between WSL2 and Docker Destkop.
+You can install [docker](https://www.docker.com) directly in your Linux (Debian 12) environment if you don't want complexity of integration between WSL2 and Docker Destkop.
 
 Install docker using `apt` package manager.
 ```sh
