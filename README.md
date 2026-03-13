@@ -3,7 +3,7 @@
 > This is a project shows how to build a Container Platform in a WSL environment. Of course, the same can be applied in a general Linux environment.
 
 # Workspace
-## Install Debian on WSL
+## Debian on WSL
 Open Settings > Apps > Programs and Features > Turn Windows features on or off dialog and select the *Windows Subsystem for Linux* to enable WSL on your system. You may reboot your system.
 
 ![enable-wsl](images/enable-wsl.png)
