@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [Kubernetes Networking](#kubernetes-networking)
+- [Traefik](#traefik)
 
 ## Kubernetes Networking
 [Kubernetes](../README.md#kubernetes) is a platform that automates the deployment, scaling, and management of containerized applications. To understand how Kubernetes ensures containers run efficiently and reliably across a cluster of machines, we need to know components of Kubernetes and how they communcate.
@@ -106,6 +107,9 @@ Cluster DNS is a DNS server, in addition to the other DNS server(s) in your envi
 
 #### Ingress
 While not a "service type" itself, Ingress is an API object that acts as a smart router (HTTP/HTTPS) in front of ClusterIP services, often providing cost-effective traffic management, such as TLS termination.
+
+## Traefik
+Traefik or Traefik Proxy is an open source reverse proxy, load balancer, and gateway that makes deploying services and APIs easy. Follow the instructions in [traefik.md](traefik/traefik.md) to learn application gateway and load balacing with Traefik.
 
 # Additional Resources
 ## Kubernetes Networking
