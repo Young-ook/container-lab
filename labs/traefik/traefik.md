@@ -30,7 +30,7 @@ After traefik proxy install, you can access web dashboard via port forwarding. R
 kubectl -n vault port-forward svc/traefik 8080
 ```
 
-![traefik-ui](../../images/traefik/web-ui.png)
+![traefik-ui](./fig/web-ui.png)
 
 ## Clean up
 Before you uninstall traefik resrouces from your kubernetes, don't forget to remove the examples. To uninstall packages, run the command.
