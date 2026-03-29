@@ -2,9 +2,10 @@
 
 ## Quick Start
 The testing environment:
+- Traefik Helm Chart 39.0.5
 - Helm 3.18
 - Kubernetes 1.35.0
-- Traefik Helm Chart 39.0.5
+- 4GB+ RAM
 
 > [!TIP]
 > Run a local Kubernetes cluster using [kind](../kind/kind.md) if you need
