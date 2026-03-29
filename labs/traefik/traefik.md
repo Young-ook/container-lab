@@ -7,13 +7,7 @@ The testing environment:
 - Kubernetes 1.35.0
 - 4GB+ RAM
 
-> [!TIP]
-> Run a local Kubernetes cluster using [kind](../kind/kind.md) if you need
-> ```bash
-> kind create cluster --image kindest/node:v1.32.2
-> ```
-
-For quickstart, run bootstrap script.
+Run your Kubernetes cluster using [kind](../kind/kind.md), Minikube, or your preferred tool. When your Kubernetes is ready, run the bootstrap script for quickstart.
 ```sh
 bash up.sh
 ```

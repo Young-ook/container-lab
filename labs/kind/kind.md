@@ -35,9 +35,14 @@ asdf install kind latest
 asdf set -u kind <version>
 ```
 
-After kind installation, you can create a new kind cluster.
+After kind installation, you can create a new cluster with default configurations.
 ```sh
 kind create cluster
+```
+
+You can specify the cluster version.
+```sh
+kind create cluster --image kindest/node:v1.32.2
 ```
 
 Or customize your cluster with config [file](./config/kind.yaml).
