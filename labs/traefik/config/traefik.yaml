@@ -1,0 +1,30 @@
+---
+global:
+  checkNewVersion: false
+
+logs:
+  general:
+    # By default, the level is set to INFO
+    # -- alternative levels: TRACE, DEBUG, INFO, WARN, ERROR, FATAL, PANIC.
+    level: INFO
+
+gateway:
+  listeners:
+    web:
+      namespacePolicy:
+        from: All
+
+api:
+  dashboard: true
+
+ingressRoute:
+  dashboard:
+    enabled:  true
+    matchRule: Host(`localhost`)
+    entryPoints:
+      - traefik
+
+providers:
+  kubernetesGateway:
+    enabled: true
+
