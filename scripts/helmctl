@@ -2,12 +2,13 @@
 
 set -e
 declare -a HELM_ARGS
+declare -a HELM_REPO
 
-VERSION=1.0.0
+VERSION=1.0.1
 
 version() {
     echo "Version: $VERSION"
-    exit 1
+    return 0
 }
 
 usage() {
@@ -23,7 +24,7 @@ usage() {
     echo "  help       Show this help message and exit"
     echo "  version    Show the version"
     echo ""
-    echo "Example: $0 config.yaml"
+    echo "Example: $0 deploy config.yaml"
     echo ""
     echo "  config.yaml:"
     echo "  ---"
@@ -31,6 +32,9 @@ usage() {
     echo "  chart: grafana/grafana"
     echo "  version: 9.2.10"
     echo "  namespace: monitoring"
+    echo "  repo:"
+    echo "    name: grafana"
+    echo "    url: https://grafana.github.io/helm-charts"
     echo ""
     exit 1
 }
@@ -58,7 +62,7 @@ prep_req () {
 
     # Check if 'helm' is installed
     if ! command -v helm &> /dev/null; then
-        echo "Error: helm is not installed or not in PATH. Please install it and ensure it is accessible." >&2
+        echo "Error: Helm is not installed or not in PATH. Please install it and ensure it is accessible." >&2
         exit 1
     else
         echo "✓ helm $(helm version --short) found."
@@ -66,7 +70,7 @@ prep_req () {
 
     # Check if helm 'diff' plugin is installed
     if ! helm plugin list | grep -q "diff"; then
-        echo "Error: helm 'diff' plugin not found. Installing now..."
+        echo "Error: Helm 'diff' plugin not found. Installing now..."
         helm plugin install "https://github.com/databus23/helm-diff"
         echo "✓ helm diff plugin $(helm diff version) is installed."
     else
@@ -79,7 +83,6 @@ prep_req () {
         exit 1
     else
         echo "✓ $(yq --version) found."
-        echo "" # new line
     fi
 
     eval_kube
@@ -124,6 +127,28 @@ load_config () {
     if [ -n "$kube_ctx" ] && [ "$kube_ctx" != "null" ]; then
         HELM_ARGS+=(--kube-context "$kube_ctx")
     fi
+
+    HELM_REPO+=($(yq e '.repo.name' "$helm_conf"))
+    HELM_REPO+=($(yq e '.repo.url' "$helm_conf"))
+}
+
+repo() {
+    local name=${HELM_REPO[0]}
+    local url=${HELM_REPO[1]}
+
+    # Check if the helm repository exists in the list
+    if [ "null" == "$name" ]; then
+        echo "Error: Helm repo name is undefined. Skipping..."
+        return
+    fi
+
+    if helm repo list | grep -q "$name"; then
+        echo "✓ Helm repo '$name' exists."
+    else
+        echo "Error: Helm repo '$name' not found. Adding now..."
+        helm repo add $name $url
+        helm repo update $name
+     fi
 }
 
 deploy() {
@@ -150,7 +175,7 @@ diff() {
         helm diff upgrade "${HELM_ARGS[@]}" \
             --context 4 --three-way-merge
     else
-        echo "Error: '${HELM_ARGS[0]}' not found"
+        echo "Error: Application '${HELM_ARGS[0]}' not found"
     fi
 }
 
@@ -179,12 +204,14 @@ case "${COMMAND}" in
     deploy)
         prep_req
         load_config "$@"
+        repo
         diff
         deploy
         ;;
     diff)
         prep_req
         load_config "$@"
+        repo
         diff
         ;;
     uninstall)
