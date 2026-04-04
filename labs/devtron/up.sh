@@ -10,14 +10,6 @@ function progress() {
   echo "+----------------------------------------------+"
 }
 
-function helmrepo() {
-  progress "Updating Helm repos"
-  ### helm repo
-  helm repo add devtron https://helm.devtron.ai 
-  helm repo list
-  helm repo update
-}
-
 function setup() {
   ### apps
   progress "Installing Devtron"
@@ -36,6 +28,5 @@ function adminpw() {
 }
 
 ### main
-helmrepo
 setup
 adminpw
