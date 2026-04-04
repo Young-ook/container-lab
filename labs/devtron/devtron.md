@@ -6,8 +6,14 @@
 
 
 ## Quick Start
-For quickstart, run bootstrap script:
-```
+The testing environment:
+- Devtron Helm Chart 0.22.98
+- Helm 3.18
+- Kubernetes 1.35.0
+- 4GB+ RAM
+
+Run your Kubernetes cluster using [kind](../kind/kind.md), or your preferred provider. When your Kubernetes is ready, run the bootstrap script for quickstart. This script setup up prerequisites and install application using Helm, a popular package manager for Kubernetes distributed applications.
+```sh
 bash up.sh
 ```
 
@@ -18,7 +24,7 @@ kubectl --namespace devtroncd port-forward service/devtron-service 8000:80
 ```
 
 Clean up:
-```
+```sh
 bash clean.sh
 ```
 
