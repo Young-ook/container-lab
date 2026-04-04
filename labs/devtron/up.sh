@@ -21,7 +21,7 @@ function setup() {
 }
 
 function adminpw() {
-  sleep 5;
+  sleep 300;
   progress "Devtron admin initial password:"
   kubectl -n devtroncd get secret devtron-secret \
       -o jsonpath='{.data.ADMIN_PASSWORD}' | base64 -d ; echo
