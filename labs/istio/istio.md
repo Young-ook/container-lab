@@ -39,6 +39,21 @@ NAME                    READY   STATUS    RESTARTS   AGE
 istiod-868857f6-6h69v   1/1     Running   0          53s
 ```
 
+## Examples
+
+### Hello
+This is an example demonstraing application-level traffic control with simple web application returning server version. You can see how to configure virtual servers and destination rules managed by istio. Run the following command to deploy resources.
+```sh
+kubectl apply -f apps/hello.yaml
+```
+
+The logs show that the backend server version is constantly changing due to weight-based routing.
+```sh
+kubectl -n hello logs -f -l app=frontend
+```
+
+![istio-hello](./fig/istio-hello.png)
+
 ## Clean up
 Before you uninstall istio resrouces from your kubernetes, don't forget to remove the examples. If you installed Istio using Helm and bootstrap script, run the command to uninstall helm release and clean up resources.
 ```sh
@@ -49,3 +64,4 @@ bash clean.sh
 
 # Additional Resources
 - [Istio GitHub](https://github.com/istio/istio)
+- [Istio Hands-on](https://vigneshragupathy.com/istio-hands-on-part-1-from-kubernetes-to-service-mesh/)
