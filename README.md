@@ -39,14 +39,15 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 ```bash
 asdf plugin add kubectl
 asdf install kubectl 1.32.1
-asdf set kubectl 1.32.1
+asdf set -u kubectl 1.32.1
 asdf list                 # or kubectl version --client
 ```
 
-To install the latest version, run `asdf install kubectl latest` instead of a specific version. And then, you can list all installed versions and switch to version what you want.
+To install the latest version, run `asdf install kubectl latest` instead of a specific version, list all installed versions to check, and switch to the version you want.
 ```bash
+asdf install kubectl latest
 asdf list
-asdf set kubectl 1.32.1
+asdf set -u kubectl 1.34.4
 ```
 
 ### Install helm
@@ -55,7 +56,7 @@ Helm is a package manager for Kubernetes. It uses 'charts' as its package format
 ```bash
 asdf plugin add helm
 asdf install helm 3.17.1
-asdf set helm 3.17.1
+asdf set -u helm 3.17.1
 asdf list                 # or helm version
 ```
 
