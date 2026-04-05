@@ -20,7 +20,7 @@ function uninstall() {
   kubectl get crd -o name | grep "istio.io" | xargs -r kubectl delete --ignore-not-found
 
   progress "Eliminating Namespaces"
-  kubectl delete ns istio-system
+  kubectl delete ns istio-system bookinfo
 }
 
 ### main
