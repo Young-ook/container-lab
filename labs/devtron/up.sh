@@ -13,6 +13,7 @@ function progress() {
 function setup() {
   ### apps
   progress "Installing Devtron"
+  echo "✓ $(bash ../../scripts/helmctl version)"
   bash ../../scripts/helmctl "deploy" "./release/devtron.yaml"
 
   ### list deployed helm releases
