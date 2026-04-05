@@ -4,15 +4,15 @@ set -e
 declare -a HELM_ARGS
 declare -a HELM_REPO
 
-VERSION=1.0.1
+VERSION="v1.0.1"
 
 version() {
-    echo "Version: $VERSION"
+    echo "helmctl version: $VERSION"
     return 0
 }
 
 usage() {
-    echo "Usage: $0 [deploy|diff|uninstall|version] <FILE.yaml|FILE.yml>"
+    echo "Usage: helmctl [deploy|diff|uninstall|version] <FILE.yaml|FILE.yml>"
     echo ""
     echo "Description:"
     echo "  This is a tool that manages a Helm application from with a .yaml or .yml config file."
@@ -24,7 +24,7 @@ usage() {
     echo "  help       Show this help message and exit"
     echo "  version    Show the version"
     echo ""
-    echo "Example: $0 deploy config.yaml"
+    echo "Example: helmctl deploy config.yaml"
     echo ""
     echo "  config.yaml:"
     echo "  ---"
