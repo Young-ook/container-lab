@@ -10,17 +10,10 @@ function progress() {
   echo "+----------------------------------------------+"
 }
 
-function helmrepo() {
-  progress "Updating Helm repos"
-  ### helm repo
-  helm repo add devtron https://helm.devtron.ai 
-  helm repo list
-  helm repo update
-}
-
 function setup() {
   ### apps
   progress "Installing Devtron"
+  echo "✓ $(bash ../../scripts/helmctl version)"
   bash ../../scripts/helmctl "deploy" "./release/devtron.yaml"
 
   ### list deployed helm releases
@@ -29,13 +22,12 @@ function setup() {
 }
 
 function adminpw() {
-  sleep 5;
+  sleep 300;
   progress "Devtron admin initial password:"
   kubectl -n devtroncd get secret devtron-secret \
       -o jsonpath='{.data.ADMIN_PASSWORD}' | base64 -d ; echo
 }
 
 ### main
-helmrepo
 setup
 adminpw

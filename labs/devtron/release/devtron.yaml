@@ -5,4 +5,7 @@ version: 0.22.98
 namespace: devtroncd
 values:
 - './config/devtron.yaml'
+repo:
+  name: devtron
+  url: https://helm.devtron.ai
 
