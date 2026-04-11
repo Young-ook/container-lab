@@ -1,0 +1,8 @@
+---
+release: istiod
+chart: istio/istiod
+version: 1.29.0
+namespace: istio-system
+values:
+- './config/istiod.yaml'
+
