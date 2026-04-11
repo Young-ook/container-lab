@@ -10,19 +10,12 @@ function progress() {
   echo "+----------------------------------------------+"
 }
 
-function helmrepo() {
-  progress "Updating Helm repos"
-  ### helm repo
-  helm repo add istio https://istio-release.storage.googleapis.com/charts
-  helm repo list
-  helm repo update
-}
-
 function setup() {
   ### apps
   # istio-base chart which contains clsuter-wide CRDs which must be installed prior to the istio control-plane.
   # istio-gateway is a chart to support istio ingress/egress gateways management.
   progress "Installing Istio"
+  echo "✓ $(bash ../../scripts/helmctl version)"
 
   bash ../../scripts/helmctl "deploy" "./release/istio-base.yaml"
   bash ../../scripts/helmctl "deploy" "./release/istiod.yaml"
@@ -45,7 +38,6 @@ function config() {
 }
 
 ### main
-helmrepo
 setup
 config
 

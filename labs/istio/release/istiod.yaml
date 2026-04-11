@@ -5,4 +5,7 @@ version: 1.29.0
 namespace: istio-system
 values:
 - './config/istiod.yaml'
+repo:
+  name: istio
+  url: https://istio-release.storage.googleapis.com/charts
 
