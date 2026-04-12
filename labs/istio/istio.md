@@ -71,6 +71,21 @@ kubectl delete -f apps/hello/app.yaml
 This is an service mesh example, application traffic management without application changes, displays information about a book, similar to a single catalog entry of an online book store. Displayed on the page is a description of the book, book details (ISBN, number of pages, and so on), and a few book reviews.
 
 #### Application
+The end-to-end architecture of the application is shown below.
+
+![istio-bookinfo-arch](./fig/istio-bookinfo-arch.png)
+
+The application is broken into four separate microservices:
+- *productpage*: The productpage microservice calls the details and reviews microservices to populate the page.
+- *details*: The details microservice contains book information.
+- *reviews*: The reviews microservice contains book reviews. It also calls the ratings microservice.
+- *ratings*: The ratings microservice contains book ranking information that accompanies a book review.
+
+There are 3 versions of the reviews microservice:
+- Version v1 doesn’t call the ratings service.
+- Version v2 calls the ratings service, and displays each rating as 1 to 5 black stars.
+- Version v3 calls the ratings service, and displays each rating as 1 to 5 red stars.
+
 Deploy the bookinfo microservices application.
 ```sh
 kubectl apply -n bookinfo -f apps/bookinfo/app.yaml
@@ -87,28 +102,10 @@ kubectl apply -n bookinfo -f apps/bookinfo/app.yaml
 > kubectl delete -n bookinfo -f https://raw.githubusercontent.com/istio/istio/release-1.29/samples/bookinfo/platform/kube/bookinfo.yaml
 > ```
 
-The application is broken into four separate microservices:
-- *productpage*: The productpage microservice calls the details and reviews microservices to populate the page.
-- *details*: The details microservice contains book information.
-- *reviews*: The reviews microservice contains book reviews. It also calls the ratings microservice.
-- *ratings*: The ratings microservice contains book ranking information that accompanies a book review.
-
-There are 3 versions of the reviews microservice:
-- Version v1 doesn’t call the ratings service.
-- Version v2 calls the ratings service, and displays each rating as 1 to 5 black stars.
-- Version v3 calls the ratings service, and displays each rating as 1 to 5 red stars.
-
-You will see the services.
-```sh
-kubectl -n bookinfo get services
-```
-
-You can access productpage service via port forwarding to your local Kubernetes. Run the following command and open `http://localhost:9080` on your browser. If you deployed the application to your preferred provider like an EKS, you can access the service on a LoadBalancer that it is provided by cloud service.
+After all pods are up, you can access the productpage service via port forwarding to your local Kubernetes. To access the front page of the application, run the following command and open `http://localhost:9080` on your browser. If you deployed the application to your preferred provider like an EKS, you can access the service on a LoadBalancer provided by cloud service.
 ```sh
 kubectl -n bookinfo port-forward service/productpage 9080:9080
 ```
-
-![istio-bookinfo-web](./fig/istio-bookinfo-web.png)
 
 #### Gateway
 Along with support for Kubernetes Ingress resources, Istio also allows you to configure ingress traffic using either an Istio Gateway or Kubernetes Gateway resource. A **Ingress Gateway** is to manage *inbound* and *outbound* traffic for your mesh, letting you specify which traffic you want to enter or leave the mesh. Gateway configurations are applied to standalone Envoy proxies that are running at the edge of the mesh, rather than sidecar Envoy proxies running alongside your service workloads.
@@ -139,9 +136,7 @@ Every gateway is backed by a service of type `LoadBalancer`. The external load b
 - You can follow the [guide](https://kind.sigs.k8s.io/docs/user/loadbalancer/) to get LoadBalancer type services to work.
 - You may be able to use [MetalLB](https://metallb.universe.tf/installation/) to get an EXTERNAL-IP for load balancer.
 
-The end-to-end architecture of the application is shown below.
-
-![istio-bookinfo-arch](./fig/istio-bookinfo-arch.png)
+![istio-bookinfo-web](./fig/istio-bookinfo-web.png)
 
 > [!NOTE]
 > For more information and updates, please chcekout the official guide of [Bookinfo Application](https://istio.io/latest/docs/examples/bookinfo/) or github repository for [Bookinfo Source Code](https://github.com/istio/istio/tree/master/samples/bookinfo).
