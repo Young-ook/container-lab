@@ -108,6 +108,8 @@ You can access productpage service via port forwarding to your local Kubernetes.
 kubectl -n bookinfo port-forward service/productpage 9080:9080
 ```
 
+![istio-bookinfo-web](./fig/istio-bookinfo-web.png)
+
 #### Gateway
 Along with support for Kubernetes Ingress resources, Istio also allows you to configure ingress traffic using either an Istio Gateway or Kubernetes Gateway resource. A **Ingress Gateway** is to manage *inbound* and *outbound* traffic for your mesh, letting you specify which traffic you want to enter or leave the mesh. Gateway configurations are applied to standalone Envoy proxies that are running at the edge of the mesh, rather than sidecar Envoy proxies running alongside your service workloads.
 
@@ -117,6 +119,10 @@ Unlike other mechanisms for controlling traffic entering your systems, such as t
 You can see Istio `istio-ingressgateway` and `istio-egressgateway` services and pods in your `istio-system` namespace, if you installed the all optional helm charts described in the setup script.
 ```sh
 kubectl -n istio-system get services
+NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                                      AGE
+istio-egressgateway    ClusterIP      10.96.52.76    <none>        15021/TCP,80/TCP,443/TCP                     11s
+istio-ingressgateway   LoadBalancer   10.96.170.87   <pending>     15021:31630/TCP,80:30239/TCP,443:32373/TCP   14s
+istiod                 ClusterIP      10.96.112.93   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        18s
 ```
 
 If everything looks good, apply the Istio Gateway configurations on the bookinfo application.
@@ -124,9 +130,18 @@ If everything looks good, apply the Istio Gateway configurations on the bookinfo
 kubectl apply -n bookinfo -f apps/bookinfo/istiogw.yaml
 ```
 
+Every gateway is backed by a service of type `LoadBalancer`. The external load balancer IP and ports for this service are used to access the gateway. Kubernetes services of type LoadBalancer are supported by default in clusters running on most cloud platforms, unfortunately, you can not get an EXTERNAL-IP of ingress gateway loadbalancer on local kind Kubernetes cluster. In some environments (e.g., test) you may need to do the following:
+
+- For quick test, you can establish a port-forwarding connection directly Envoy proxy of ingress gateway and access the application on your browser (`http://localhost:8080/productpage`).
+  ```sh
+  kubectl -n istio-system port-forward pod/<istio-proxy-pod> 8080:8080
+  ```
+- You can follow the [guide](https://kind.sigs.k8s.io/docs/user/loadbalancer/) to get LoadBalancer type services to work.
+- You may be able to use [MetalLB](https://metallb.universe.tf/installation/) to get an EXTERNAL-IP for load balancer.
+
 The end-to-end architecture of the application is shown below.
 
-![istio-bookinfo](./fig/istio-bookinfo.png)
+![istio-bookinfo-arch](./fig/istio-bookinfo-arch.png)
 
 > [!NOTE]
 > For more information and updates, please chcekout the official guide of [Bookinfo Application](https://istio.io/latest/docs/examples/bookinfo/) or github repository for [Bookinfo Source Code](https://github.com/istio/istio/tree/master/samples/bookinfo).
