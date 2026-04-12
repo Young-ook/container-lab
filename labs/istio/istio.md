@@ -133,19 +133,21 @@ Every gateway is backed by a service of type `LoadBalancer`. The external load b
   ```sh
   kubectl -n istio-system port-forward pod/<istio-proxy-pod> 8080:8080
   ```
-- You can follow the [guide](https://kind.sigs.k8s.io/docs/user/loadbalancer/) to get LoadBalancer type services to work.
+- You can follow the [cloud-provider-kind guide](https://kind.sigs.k8s.io/docs/user/loadbalancer/) to get LoadBalancer type services to work.
 - You may be able to use [MetalLB](https://metallb.universe.tf/installation/) to get an EXTERNAL-IP for load balancer.
 
 ![istio-bookinfo-web](./fig/istio-bookinfo-web.png)
-
-> [!NOTE]
-> For more information and updates, please chcekout the official guide of [Bookinfo Application](https://istio.io/latest/docs/examples/bookinfo/) or github repository for [Bookinfo Source Code](https://github.com/istio/istio/tree/master/samples/bookinfo).
 
 Same as the other examples, clean up the applications when you finished the lab.
 ```sh
 kubectl delete -n bookinfo -f apps/bookinfo/istiogw.yaml
 kubectl delete -n bookinfo -f apps/bookinfo/app.yaml
 ```
+
+##### Kubernetes Gateway
+
+> [!NOTE]
+> For more information and updates, please chcekout the official guide of [Bookinfo Application](https://istio.io/latest/docs/examples/bookinfo/) or github repository for [Bookinfo Source Code](https://github.com/istio/istio/tree/master/samples/bookinfo).
 
 ## Clean up
 Before you uninstall Istio resrouces from your Kubernetes, don't forget to remove the examples. If you installed Istio using Helm and bootstrap script, run the command to uninstall helm release and clean up resources.
