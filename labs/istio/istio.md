@@ -39,6 +39,12 @@ NAME                    READY   STATUS    RESTARTS   AGE
 istiod-868857f6-6h69v   1/1     Running   0          53s
 ```
 
+### Install with Istioctl
+Run your Kubernetes cluster using [kind](../kind/kind.md), or your preferred provider. When your Kubernetes is ready, run istioctl command to install istio on your Kubernetes cluster. For more details, please refer to the [Install Istio with Istioctl](https://istio.io/latest/docs/setup/install/istioctl/).
+```sh
+istioctl install --set profile=demo -y
+```
+
 ## Examples
 
 ### Hello
@@ -132,9 +138,14 @@ kubectl delete -n bookinfo -f apps/bookinfo/app.yaml
 ```
 
 ## Clean up
-Before you uninstall istio resrouces from your kubernetes, don't forget to remove the examples. If you installed Istio using Helm and bootstrap script, run the command to uninstall helm release and clean up resources.
+Before you uninstall Istio resrouces from your Kubernetes, don't forget to remove the examples. If you installed Istio using Helm and bootstrap script, run the command to uninstall helm release and clean up resources.
 ```sh
 bash clean.sh
+```
+
+When you use istioctl, use the uninstall command of istioctl to remove the Istio resources from your Kubernetes.
+```sh
+istioctl uninstall
 ```
 
 ## Troubleshooting
