@@ -7,7 +7,7 @@
 ## Kubernetes Networking
 [Kubernetes](../README.md#kubernetes) is a platform that automates the deployment, scaling, and management of containerized applications. To understand how Kubernetes ensures containers run efficiently and reliably across a cluster of machines, we need to know components of Kubernetes and how they communcate.
 
-![kube-arch](../images/kind/kube-arch.png)
+![kube-arch](./kind/fig/kube-arch.png)
 
 ### Components
 
@@ -107,6 +107,24 @@ Cluster DNS is a DNS server, in addition to the other DNS server(s) in your envi
 
 #### Ingress
 While not a "service type" itself, Ingress is an API object that acts as a smart router (HTTP/HTTPS) in front of ClusterIP services, often providing cost-effective traffic management, such as TLS termination.
+
+#### Gateway
+Kubernetes Gateway API is a standardized framework for managing traffic focused on L4 and L7 routing in Kubernetes, designed to improve upon the existing Ingress resource by providing advanced routing, load balancing, and security features. Kubernetes Gateway represents a significant improvement over traditional Ingress methods, providing a more standardized and flexible approach to managing network traffic in cloud-native applications. Before the Kubernetes Gateway API, there were various approaches and methods for managing application networking. Resource names and features for URL-based traffic control varied by venders, such as VirtualService, VirtualRoute, DestinationRule, and URLfilter differed slightly from one another.
+
+- Simplified Management: Centralizes traffic management, reducing operational complexity.
+- Scalability: Supports dynamic environments, allowing applications to scale efficiently.
+- Role-Oriented Design: Tailors configurations based on different organizational roles, enhancing usability.
+
+Components of Kubernetes Gateway
+| Component | Description |
+|-----------|-------------|
+| GatewayClass | Defines a set of gateways with common configurations managed by a controller. |
+| Gateway | Represents an instance of traffic handling infrastructure, such as a load balancer. |
+| Routes | Specify how traffic is mapped from the Gateway to backend services. (`HTTPRoute`, `TLSRoute`) |
+
+The overall resource model focuses on 3 separate personas and corresponding resources that they are expected to manage:
+
+![kube-gwapi](./traefik/fig/kube-gwapi.png)
 
 ## Traefik
 Traefik or Traefik Proxy is an open source reverse proxy, load balancer, and gateway that makes deploying services and APIs easy. Follow the instructions in [traefik.md](traefik/traefik.md) to learn application gateway and load balacing with Traefik.
