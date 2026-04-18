@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [Kubernetes Networking](#kubernetes-networking)
+- [Istio](#istio)
 - [Traefik](#traefik)
 
 ## Kubernetes Networking
@@ -125,6 +126,9 @@ Components of Kubernetes Gateway
 The overall resource model focuses on 3 separate personas and corresponding resources that they are expected to manage:
 
 ![kube-gwapi](./traefik/fig/kube-gwapi.png)
+
+## Istio
+Istio is a service mesh that transparently overlays existing distributed applications, providing a consistent way to integrate microservices, manage traffic flow between them, enforce policies, and aggregate telemetry data. Follow the instructions in [istio.md](istio/istio.md) to learn application traffic management with service mesh using Istio.
 
 ## Traefik
 Traefik or Traefik Proxy is an open source reverse proxy, load balancer, and gateway that makes deploying services and APIs easy. Follow the instructions in [traefik.md](traefik/traefik.md) to learn application gateway and load balacing with Traefik.
