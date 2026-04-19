@@ -41,8 +41,46 @@ istiod-868857f6-6h69v   1/1     Running   0          53s
 
 ### Install with Istioctl
 Run your Kubernetes cluster using [kind](../kind/kind.md), or your preferred provider. When your Kubernetes is ready, run istioctl command to install istio on your Kubernetes cluster. For more details, please refer to the [Install Istio with Istioctl](https://istio.io/latest/docs/setup/install/istioctl/).
+
+Here are the examples of istioctl command with options to install Istio (service mesh) to your cluster.
+
 ```sh
-istioctl install --set profile=demo -y
+# Apply a default Istio installation
+istioctl install
+```
+
+```sh
+# Enable Tracing
+istioctl install --set meshConfig.enableTracing=true
+```
+
+```sh
+# Generate the demo profile and don't wait for confirmation
+istioctl install --set profile=demo --skip-confirmation
+```
+
+Follow the instructions:
+```sh
+        |\
+        | \
+        |  \
+        |   \
+      /||    \
+     / ||     \
+    /  ||      \
+   /   ||       \
+  /    ||        \
+ /     ||         \
+/______||__________\
+____________________
+  \__       _____/
+     \_____/
+
+This will install the Istio 1.29.0 profile "default" into the cluster. Proceed? (y/N) y
+✔ Istio core installed ⛵️
+✔ Istiod installed 🧠
+✔ Ingress gateways installed 🛬
+✔ Installation complete
 ```
 
 ## Examples
