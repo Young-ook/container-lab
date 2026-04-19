@@ -41,8 +41,30 @@ istiod-868857f6-6h69v   1/1     Running   0          53s
 
 ### Install with Istioctl
 Run your Kubernetes cluster using [kind](../kind/kind.md), or your preferred provider. When your Kubernetes is ready, run istioctl command to install istio on your Kubernetes cluster. For more details, please refer to the [Install Istio with Istioctl](https://istio.io/latest/docs/setup/install/istioctl/).
+
+Here are the examples of istioctl command with options to install Istio (service mesh) to your cluster.
+- Apply a default Istio installation
+  ```sh
+  istioctl install
+  ```
+- Enable Tracing
+  ```sh
+  istioctl install --set meshConfig.enableTracing=true
+  ```
+- Generate the demo profile and don't wait for confirmation
+  ```sh
+  istioctl install --set profile=demo --skip-confirmation
+  ```
+
+Follow the instructions.
+
+![istioctl](./fig/istioctl.png)
+
+After installation, you can see the version of your Istio using `istioctl version`.
 ```sh
-istioctl install --set profile=demo -y
+client version: 1.29.0
+control plane version: 1.29.0
+data plane version: 1.29.0 (1 proxies)
 ```
 
 ## Examples
@@ -157,7 +179,7 @@ bash clean.sh
 
 When you use istioctl, use the uninstall command of istioctl to remove the Istio resources from your Kubernetes.
 ```sh
-istioctl uninstall
+istioctl uninstall --purge
 ```
 
 ## Troubleshooting
