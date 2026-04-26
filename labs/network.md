@@ -36,7 +36,7 @@ Here is a breakdown of the Kubernetes service types:
 
 This is the diagram shows traffic flow of Kubernetes service types:
 ```mermaid
-graph TD
+graph LR
     subgraph "External Network"
         User((User/Client))
     end
@@ -57,7 +57,8 @@ graph TD
             Pod2[Backend Pod B]
         end
 
-        CIP[ClusterIP Service]
+        ING[Ingress]
+        CIP[ClusterIP: Service]
     end
 
     %% ClusterIP Flow (Internal)
@@ -74,6 +75,10 @@ graph TD
     LB --> NP_1
     LB --> NP_2
     NP_2 --> CIP
+
+    %% Ingress Flow
+    LB --> ING
+    ING -- "4. Routing Rule" --> CIP
 ```
 
 Other service types:
