@@ -132,6 +132,21 @@ The overall resource model focuses on 3 separate personas and corresponding reso
 
 ![kube-gwapi](./traefik/fig/kube-gwapi.png)
 
+
+```mermaid
+graph LR;
+    User((User/Client))-. load balancer .->GW[Gateway];
+
+    subgraph "Kubernetes Cluster"
+        %% Gateway Route Flow
+        GW[Gateway] -- "Routing Rules (HTTPRoute,TLSRoute)" --> SVC[Service];
+
+        %% Internal Service Load Balancing
+        SVC[Service] --> POD1[Pod];
+        SVC[Service] --> POD2[Pod];
+    end
+```
+
 ## Istio
 Istio is a service mesh that transparently overlays existing distributed applications, providing a consistent way to integrate microservices, manage traffic flow between them, enforce policies, and aggregate telemetry data. Follow the instructions in [istio.md](istio/istio.md) to learn application traffic management with service mesh using Istio.
 
