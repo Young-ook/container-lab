@@ -1,0 +1,46 @@
+---
+# Kafka configuration
+replicaCount: 3
+
+# ZooKeeper configuration (or use KRaft)
+zookeeper:
+  enabled: false
+
+# KRaft mode (ZooKeeper-less), Kafka 3.3+
+kraft:
+  enabled: true
+
+# Persistence
+persistence:
+  enabled: true
+  storageClass: fast-storage
+  size: 10Gi
+
+# Kafka configuration
+config: |
+  offsets.topic.replication.factor=3
+  transaction.state.log.replication.factor=3
+  transaction.state.log.min.isr=2
+  default.replication.factor=3
+  min.insync.replicas=2
+  num.partitions=3
+  log.retention.hours=168
+
+# SASL authentication
+auth:
+  clientProtocol: sasl
+  interBrokerProtocol: sasl
+  sasl:
+    mechanisms: scram-sha-512
+    interBrokerMechanism: scram-sha-512
+
+# Metrics
+metrics:
+  kafka:
+    enabled: true
+  jmx:
+    enabled: true
+  serviceMonitor:
+    enabled: false
+    namespace: monitoring
+

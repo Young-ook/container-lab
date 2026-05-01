@@ -1,0 +1,11 @@
+---
+release: kafka
+chart: bitnami/kafka
+version: 32.4.2
+namespace: kafka
+values:
+- './config/kafka.yaml'
+repo:
+  name: bitnami
+  url: https://charts.bitnami.com/bitnami
+
